@@ -1,0 +1,35 @@
+.wrapper {
+  width: 100%;
+}
+
+.innerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 55vh;
+  overflow-y: auto;
+}
+
+.checkoutWrapper {
+  display: flex;
+  gap: 41.5px;
+  margin-top: 40px;
+  margin-left: 250px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  margin-right: 9px;
+
+  & svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.dragItem {
+  display: flex;
+  align-items: center;
+  gap: 13.5px;
+}
