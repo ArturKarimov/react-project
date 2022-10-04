@@ -1,0 +1,17 @@
+.wrapper {
+  width: 100%;
+
+  &:first-child {
+    margin-right: 40px;
+  }
+}
+
+.ingredientsBlockWrapper {
+  height: 70vh;
+  overflow-y: auto;
+}
+
+.tabs {
+  display: flex;
+  margin: 0 0 40px 0;
+}

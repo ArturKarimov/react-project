@@ -1,0 +1,25 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 40px 0 40px;
+    width: 272px;
+
+    & img {
+        margin-bottom: 9px;
+    }
+
+    & p {
+        text-align: center;
+    }
+}
+
+.price {
+    display: flex;
+    margin-bottom: 9px;
+
+    & p {
+        margin-right: 9px;
+    }
+}
