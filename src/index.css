@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tab {
+  min-width: calc(100% / 3) !important;
+}
+
+.constructor-element {
+  max-width: 100% !important;
+}
+
+.constructor-element_pos_top {
+  margin-bottom: 10px;
+  max-width: calc(100% - 45.5px) !important;
+  margin-left: 36.5px;
+}
+
+.constructor-element_pos_bottom {
+  margin-top: 10px;
+  max-width: calc(100% - 45.5px) !important;
+  margin-left: 36.5px;
+}

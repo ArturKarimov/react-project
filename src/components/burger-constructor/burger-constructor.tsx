@@ -18,9 +18,9 @@ const BurgerConstructor: React.FC<IBurgerConstructor> = ({ ingredients }) => {
                 thumbnail={ingredients[0].image}
             />
             <div className={bc.innerWrapper}>
-                {ingredients.map(ing => {
+                {ingredients.filter(el => el.type !== "bun").map(ing => {
                     return (
-                        <div className={bc.dragItem}>
+                        <div className={bc.dragItem} key={ing._id}>
                             <DragIcon type="primary" />
                             <ConstructorElement
                                 text={ing.name}
