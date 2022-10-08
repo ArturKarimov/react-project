@@ -2,10 +2,12 @@ import React from 'react';
 import burgerIng from "./burger-ingredients.module.scss";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsBlock from "./ingredients-block.tsx/ingredients-block";
-import {data} from "../../utils/data";
+import { DataContext } from "../app";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('one')
+    const res = React.useContext(DataContext)
+    const data = res.data;
 
     const buns = data.filter(el => el.type === "bun");
     const sauces = data.filter(el => el.type === "sauce");

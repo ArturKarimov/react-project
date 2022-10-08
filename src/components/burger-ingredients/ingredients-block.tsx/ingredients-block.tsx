@@ -16,7 +16,9 @@ const IngredientsBlock: React.FC<IIngredientsBlock> = ({ name, ingredients }) =>
                 {name}
             </p>
             <div className={bun.wrapper}>
-                {ingredients.map(ing => <IngredientItem key={ing._id} name={ing.name} price={ing.price} img={ing.image} />)}
+                {ingredients.map(ing => {
+                    return <IngredientItem key={ing._id} ingredient={ing} />
+                })}
             </div>
         </div>
     );

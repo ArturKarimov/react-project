@@ -12,3 +12,14 @@ export interface IIngredients {
     image_large: string,
     __v: number;
 }
+
+export interface IIngredientsData {
+    success: boolean;
+    data: IIngredients[];
+}
+
+export interface IMainDataRequest {
+    response: IIngredientsData | null,
+    loading: boolean,
+    hasError: boolean
+}

@@ -15,6 +15,10 @@
   gap: 41.5px;
   margin-top: 40px;
   margin-left: 250px;
+
+  button {
+    cursor: pointer;
+  }
 }
 
 .price {
@@ -23,6 +27,7 @@
   margin-right: 9px;
 
   & svg {
+    margin-left: 9.5px;
     width: 32px;
     height: 32px;
   }
