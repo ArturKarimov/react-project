@@ -7,6 +7,7 @@ import CreatingBurger from "./creating-burger/creating-burger";
 import { IIngredientsData, IMainDataRequest } from "../common/interface";
 import ErrorBoundary from "./error-boundary/error-boundary";
 import Loading from "./loading/loading";
+import { baseUrl } from "../utils/constants";
 
 export const DataContext = React.createContext<IIngredientsData>({} as IIngredientsData);
 
@@ -19,10 +20,9 @@ function App() {
     const isLoading = state.loading && !state.response?.success;
 
     const getIngredientsData = async () => {
-        const url = process.env.REACT_APP_DATA_API_URL || "";
         try {
             setState({...state, loading: true});
-            const res = await fetch(url);
+            const res = await fetch(baseUrl);
             const data = await res.json();
             setState({...state, response: data, loading: false });
         } catch (e) {
