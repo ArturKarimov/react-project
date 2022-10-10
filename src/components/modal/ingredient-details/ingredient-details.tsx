@@ -1,6 +1,6 @@
 import React from "react";
 import ing from "./ingredient-details.module.scss";
-import { IngredientItemProps } from "../../burger-ingredients/ingredient-item/ingredient-item";
+import {IIngredients} from "../../../common/interface";
 
 enum Characteristics {
     Calories = "Калории, ккал",
@@ -9,7 +9,11 @@ enum Characteristics {
     Carbohydrates = "Углеводы, г"
 }
 
-const IngredientDetails: React.FC<IngredientItemProps> = ({ ingredient}) => {
+export interface IIngredientDetails {
+    ingredient: IIngredients;
+}
+
+const IngredientDetails: React.FC<IIngredientDetails> = ({ ingredient}) => {
 
     const getInfo = (name: Characteristics, quantity: number) => {
         return (

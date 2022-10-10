@@ -6,9 +6,10 @@ import { IIngredients } from '../../../common/interface';
 interface IIngredientsBlock {
     name: string;
     ingredients: IIngredients[];
+    handleModalOpen: (content: IIngredients) => void;
 }
 
-const IngredientsBlock: React.FC<IIngredientsBlock> = ({ name, ingredients }) => {
+const IngredientsBlock: React.FC<IIngredientsBlock> = ({ name, ingredients , handleModalOpen }) => {
 
     return (
         <div>
@@ -17,7 +18,7 @@ const IngredientsBlock: React.FC<IIngredientsBlock> = ({ name, ingredients }) =>
             </p>
             <div className={bun.wrapper}>
                 {ingredients.map(ing => {
-                    return <IngredientItem key={ing._id} ingredient={ing} />
+                    return <IngredientItem key={ing._id} ingredient={ing} handleModalOpen={handleModalOpen} />
                 })}
             </div>
         </div>

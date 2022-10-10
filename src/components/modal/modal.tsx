@@ -27,25 +27,24 @@ export const Modal: React.FC<IModal> = (
 ) => {
 
     React.useEffect(() => {
-        document.addEventListener("keydown", escHandler);
-
+        const escHandler = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+        if (active) {
+            document.addEventListener("keydown", escHandler);
+        }
         return () => {
             document.removeEventListener("keydown", escHandler);
         };
-    }, []);
+    }, [active]);
 
     const onClose = () => {
         setActive(false)
     }
 
-    const escHandler = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-            onClose()
-        }
-    }
-
     return ReactDOM.createPortal(
-        <>
             <ModalOverlay active={active} onClose={onClose}>
                 {active &&
                     <div className={modal.modalContent} style={{width, height}} onClick={e => e.stopPropagation()}>
@@ -55,8 +54,7 @@ export const Modal: React.FC<IModal> = (
                         </div>
                     </div>
                 }
-            </ModalOverlay>
-        </>,
+            </ModalOverlay>,
         modalRoot
     );
 }
