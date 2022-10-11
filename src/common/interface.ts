@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface IIngredients {
     _id: string,
     name: string,
@@ -11,4 +13,15 @@ export interface IIngredients {
     image_mobile: string,
     image_large: string,
     __v: number;
+}
+
+export interface IIngredientsData {
+    success: boolean;
+    data: IIngredients[];
+}
+
+export interface IMainDataRequest {
+    response: IIngredientsData | null,
+    loading: boolean,
+    hasError: boolean
 }

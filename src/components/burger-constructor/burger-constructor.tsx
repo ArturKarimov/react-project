@@ -1,13 +1,29 @@
 import React from 'react';
 import bc from "./burger-constructor.module.scss";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredients } from '../../common/interface';
+import { DataContext } from "../app";
+import { Modal } from "../modal/modal";
+import OrderDetails from "../modal/order-details/order-details";
+import { IIngredients } from "../../common/interface";
 
-interface IBurgerConstructor {
-    ingredients: IIngredients[];
-}
+const BurgerConstructor = () => {
+    const res = React.useContext(DataContext)
+    const ingredients = res.data;
 
-const BurgerConstructor: React.FC<IBurgerConstructor> = ({ ingredients }) => {
+    const [modalActive, setModalActive] = React.useState(false);
+    const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients);
+
+    const totalPrice = ingredientsData.reduce((acc, el) => acc + el.price, 0)
+
+    const deleteIngredient = (ingredient: IIngredients) => {
+        const newIngredientsData = ingredientsData.filter(el => el._id !== ingredient._id)
+        setIngredientsData(newIngredientsData)
+    }
+
+    const openCheckoutModal = React.useCallback(() => {
+        setModalActive(true);
+    }, []);
+
     return (
         <div className={bc.wrapper}>
             <ConstructorElement
@@ -18,14 +34,15 @@ const BurgerConstructor: React.FC<IBurgerConstructor> = ({ ingredients }) => {
                 thumbnail={ingredients[0].image}
             />
             <div className={bc.innerWrapper}>
-                {ingredients.filter(el => el.type !== "bun").map(ing => {
+                {ingredientsData.filter(el => el.type !== "bun").map(ing => {
                     return (
                         <div className={bc.dragItem} key={ing._id}>
-                            <DragIcon type="primary" />
+                            <DragIcon type="primary"/>
                             <ConstructorElement
                                 text={ing.name}
                                 price={ing.price}
                                 thumbnail={ing.image}
+                                handleClose={() => deleteIngredient(ing)}
                             />
                         </div>
                     )
@@ -40,13 +57,16 @@ const BurgerConstructor: React.FC<IBurgerConstructor> = ({ ingredients }) => {
             />
             <div className={bc.checkoutWrapper}>
                 <div className={bc.price}>
-                    <p className="text text_type_digits-medium">610</p>
-                    <CurrencyIcon type="primary" />
+                    <p className="text text_type_digits-medium">{totalPrice}</p>
+                    <CurrencyIcon type="primary"/>
                 </div>
-                <Button type="primary" size="large" htmlType="button">
+                <Button type="primary" size="large" htmlType="button" onClick={openCheckoutModal}>
                     Оформить заказ
                 </Button>
             </div>
+            <Modal active={modalActive} setActive={setModalActive} width={720} height={718}>
+                <OrderDetails/>
+            </Modal>
         </div>
     );
 };
