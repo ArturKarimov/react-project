@@ -1,10 +1,11 @@
 import React from 'react';
 import bc from "./burger-constructor.module.scss";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext } from "../app";
-import { Modal } from "../modal/modal";
+import { DataContext} from "../app";
+import { Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
-import { IIngredients } from "../../common/interface";
+import { IIngredients, IMainDataRequest, IOrderInfoRequest } from "../../common/interface";
+import { orderInfo } from "../../utils/constants";
 
 const BurgerConstructor = () => {
     const res = React.useContext(DataContext)
@@ -12,16 +13,46 @@ const BurgerConstructor = () => {
 
     const [modalActive, setModalActive] = React.useState(false);
     const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients);
+    const [state, setState] = React.useState<IMainDataRequest<IOrderInfoRequest>>({
+        response: null,
+        loading: true,
+        hasError: false
+    })
 
-    const totalPrice = ingredientsData.reduce((acc, el) => acc + el.price, 0)
+    const bun = React.useMemo(() => ingredientsData.find(b => b.type === "bun") || {} as IIngredients, [ingredientsData]);
+
+    const totalPrice = React.useMemo(() => ingredientsData.reduce((acc, el) => acc + el.price, 0), [ingredientsData]);
 
     const deleteIngredient = (ingredient: IIngredients) => {
         const newIngredientsData = ingredientsData.filter(el => el._id !== ingredient._id)
         setIngredientsData(newIngredientsData)
     }
 
+    const getOrderDetails = async () => {
+        try {
+            let data;
+            const selectedItems = JSON.stringify({ ingredients: ingredientsData.map(el => el._id) });
+            setState({...state, loading: true});
+            const res = await fetch(orderInfo, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: selectedItems
+            });
+            if (res.ok) {
+                data = await res.json();
+                setState({...state, response: data, loading: false});
+            } else {
+                return Promise.reject(`Ошибка ${res.status}`);
+            }
+        } catch (e) {
+            console.log("Error", e);
+            setState({...state, hasError: true, loading: false});
+        }
+    };
+
     const openCheckoutModal = React.useCallback(() => {
-        setModalActive(true);
+        getOrderDetails()
+            .then(() => setModalActive(true))
     }, []);
 
     return (
@@ -29,9 +60,9 @@ const BurgerConstructor = () => {
             <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={ingredients[0].name + " (верх)"}
-                price={ingredients[0].price}
-                thumbnail={ingredients[0].image}
+                text={bun.name + " (верх)"}
+                price={bun.price}
+                thumbnail={bun.image}
             />
             <div className={bc.innerWrapper}>
                 {ingredientsData.filter(el => el.type !== "bun").map(ing => {
@@ -51,9 +82,9 @@ const BurgerConstructor = () => {
             <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={ingredients[0].name + " (низ)"}
-                price={ingredients[0].price}
-                thumbnail={ingredients[0].image}
+                text={bun.name + " (низ)"}
+                price={bun.price}
+                thumbnail={bun.image}
             />
             <div className={bc.checkoutWrapper}>
                 <div className={bc.price}>
@@ -65,7 +96,7 @@ const BurgerConstructor = () => {
                 </Button>
             </div>
             <Modal active={modalActive} setActive={setModalActive} width={720} height={718}>
-                <OrderDetails/>
+                <OrderDetails order={state.response?.order.number || null} />
             </Modal>
         </div>
     );

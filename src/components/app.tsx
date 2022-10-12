@@ -12,7 +12,7 @@ import {baseUrl} from "../utils/constants";
 export const DataContext = React.createContext<IIngredientsData>({} as IIngredientsData);
 
 function App() {
-    const [state, setState] = React.useState<IMainDataRequest>({
+    const [state, setState] = React.useState<IMainDataRequest<IIngredientsData>>({
         response: null,
         loading: true,
         hasError: false
