@@ -1,25 +1,20 @@
 import React from 'react';
 import bc from "./burger-constructor.module.scss";
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext} from "../app";
-import { Modal} from "../modal/modal";
+import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {DataContext} from "../../services/context";
+import {Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
-import { IIngredients, IMainDataRequest, IOrderInfoRequest } from "../../common/interface";
-import { orderInfo } from "../../utils/constants";
+import {IIngredients} from "../../common/interface";
+import {BOTTOM, BUN, TOP} from "../../utils/constants";
 
 const BurgerConstructor = () => {
     const res = React.useContext(DataContext)
-    const ingredients = res.data;
+    const ingredients = res?.data;
 
     const [modalActive, setModalActive] = React.useState(false);
-    const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients);
-    const [state, setState] = React.useState<IMainDataRequest<IOrderInfoRequest>>({
-        response: null,
-        loading: true,
-        hasError: false
-    })
+    const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients || []);
 
-    const bun = React.useMemo(() => ingredientsData.find(b => b.type === "bun") || {} as IIngredients, [ingredientsData]);
+    const bun = React.useMemo(() => ingredientsData.find(b => b.type === BUN), [ingredientsData]);
 
     const totalPrice = React.useMemo(() => ingredientsData.reduce((acc, el) => acc + el.price, 0), [ingredientsData]);
 
@@ -27,45 +22,23 @@ const BurgerConstructor = () => {
         const newIngredientsData = ingredientsData.filter(el => el._id !== ingredient._id)
         setIngredientsData(newIngredientsData)
     }
+    const selectedItems = {ingredients: ingredientsData.map(el => el._id)};
 
-    const getOrderDetails = async () => {
-        try {
-            let data;
-            const selectedItems = JSON.stringify({ ingredients: ingredientsData.map(el => el._id) });
-            setState({...state, loading: true});
-            const res = await fetch(orderInfo, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: selectedItems
-            });
-            if (res.ok) {
-                data = await res.json();
-                setState({...state, response: data, loading: false});
-            } else {
-                return Promise.reject(`Ошибка ${res.status}`);
-            }
-        } catch (e) {
-            console.log("Error", e);
-            setState({...state, hasError: true, loading: false});
-        }
-    };
-
-    const openCheckoutModal = React.useCallback(() => {
-        getOrderDetails()
-            .then(() => setModalActive(true))
-    }, []);
+    const openCheckoutModal = () => {
+        setModalActive(true)
+    }
 
     return (
         <div className={bc.wrapper}>
             <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={bun.name + " (верх)"}
-                price={bun.price}
-                thumbnail={bun.image}
+                text={bun?.name + TOP}
+                price={bun!.price}
+                thumbnail={bun!.image}
             />
             <div className={bc.innerWrapper}>
-                {ingredientsData.filter(el => el.type !== "bun").map(ing => {
+                {ingredientsData.filter(el => el.type !== BUN).map(ing => {
                     return (
                         <div className={bc.dragItem} key={ing._id}>
                             <DragIcon type="primary"/>
@@ -82,9 +55,9 @@ const BurgerConstructor = () => {
             <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={bun.name + " (низ)"}
-                price={bun.price}
-                thumbnail={bun.image}
+                text={bun?.name + BOTTOM}
+                price={bun!.price}
+                thumbnail={bun!.image}
             />
             <div className={bc.checkoutWrapper}>
                 <div className={bc.price}>
@@ -96,7 +69,7 @@ const BurgerConstructor = () => {
                 </Button>
             </div>
             <Modal active={modalActive} setActive={setModalActive} width={720} height={718}>
-                <OrderDetails order={state.response?.order.number || null} />
+                <OrderDetails selectedItems={selectedItems}/>
             </Modal>
         </div>
     );

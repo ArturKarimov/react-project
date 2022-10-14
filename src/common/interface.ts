@@ -27,9 +27,14 @@ export interface IMainDataRequest<T> {
 }
 
 export interface IOrderInfoRequest {
+    ingredients: string[];
+}
+
+export interface IOrderInfoResponse {
     name: string,
     order: {
         number: number
     },
     success: boolean
 }
+
