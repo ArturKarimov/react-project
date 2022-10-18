@@ -2,22 +2,22 @@ import React from 'react';
 import burgerIng from "./burger-ingredients.module.scss";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsBlock from "./ingredients-block.tsx/ingredients-block";
-import { DataContext } from "../app";
+import { DataContext } from "../../services/context";
 import { Modal } from "../modal/modal";
 import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import { IIngredients } from "../../common/interface";
 
 const BurgerIngredients = () => {
-    const [current, setCurrent] = React.useState('one')
+    const [current, setCurrent] = React.useState('one');
     const [modalActive, setModalActive] = React.useState(false);
-    const [modalData, setModalData] = React.useState<IIngredients>({} as IIngredients)
+    const [modalData, setModalData] = React.useState<IIngredients | null>(null);
 
-    const res = React.useContext(DataContext)
-    const data = res.data;
+    const res = React.useContext(DataContext);
+    const data = res?.data;
 
-    const buns = data.filter(el => el.type === "bun");
-    const sauces = data.filter(el => el.type === "sauce");
-    const main = data.filter(el => el.type === "main");
+    const buns = data?.filter(el => el.type === "bun") || [];
+    const sauces = data?.filter(el => el.type === "sauce") || [];
+    const main = data?.filter(el => el.type === "main") || [];
 
     const handleModalOpen = (content: IIngredients) => {
         setModalData(content)

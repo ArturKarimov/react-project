@@ -20,8 +20,21 @@ export interface IIngredientsData {
     data: IIngredients[];
 }
 
-export interface IMainDataRequest {
-    response: IIngredientsData | null,
+export interface IMainDataRequest<T> {
+    response: T | null,
     loading: boolean,
     hasError: boolean
 }
+
+export interface IOrderInfoRequest {
+    ingredients: string[];
+}
+
+export interface IOrderInfoResponse {
+    name: string,
+    order: {
+        number: number
+    },
+    success: boolean
+}
+

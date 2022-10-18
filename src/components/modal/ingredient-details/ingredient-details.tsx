@@ -10,12 +10,12 @@ enum Characteristics {
 }
 
 export interface IIngredientDetails {
-    ingredient: IIngredients;
+    ingredient: IIngredients | null;
 }
 
 const IngredientDetails: React.FC<IIngredientDetails> = ({ ingredient}) => {
 
-    const getInfo = (name: Characteristics, quantity: number) => {
+    const getInfo = (name: Characteristics, quantity: number | string) => {
         return (
             <div className={ing.info}>
                 <p className="text text_type_main-default">{name}</p>
@@ -27,14 +27,14 @@ const IngredientDetails: React.FC<IIngredientDetails> = ({ ingredient}) => {
     return (
         <div className={ing.wrapper}>
             <div className={ing.imageWrapper}>
-                <img src={ingredient.image_large} alt={ingredient.name}/>
+                <img src={ingredient?.image_large} alt={ingredient?.name}/>
             </div>
-            <p className="text text_type_main-medium">{ingredient.name}</p>
+            <p className="text text_type_main-medium">{ingredient?.name}</p>
             <div className={ing.characteristics}>
-                {getInfo(Characteristics.Calories, ingredient.calories)}
-                {getInfo(Characteristics.Proteins, ingredient.proteins)}
-                {getInfo(Characteristics.Fats, ingredient.fat)}
-                {getInfo(Characteristics.Carbohydrates, ingredient.carbohydrates)}
+                {getInfo(Characteristics.Calories, ingredient?.calories || "-")}
+                {getInfo(Characteristics.Proteins, ingredient?.proteins || "-")}
+                {getInfo(Characteristics.Fats, ingredient?.fat || "-")}
+                {getInfo(Characteristics.Carbohydrates, ingredient?.carbohydrates || "-")}
             </div>
         </div>
     );
