@@ -1,21 +1,19 @@
 import React from 'react';
 import bc from "./burger-constructor.module.scss";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {DataContext} from "../../services/context";
 import {Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
 import {IIngredients} from "../../common/interface";
 import {BOTTOM, BUN, TOP} from "../../utils/constants";
+import {ingredientsApi} from "../../services/reducers/ingredients/ingredients-service";
 
 const BurgerConstructor = () => {
-    const res = React.useContext(DataContext)
-    const ingredients = res?.data;
+    const { data: ingredients } = ingredientsApi.useFetchAllIngredientsQuery("");
 
     const [modalActive, setModalActive] = React.useState(false);
-    const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients || []);
+    const [ingredientsData, setIngredientsData] = React.useState<IIngredients[]>(ingredients?.data || []);
 
     const bun = React.useMemo(() => ingredientsData.find(b => b.type === BUN), [ingredientsData]);
-
     const totalPrice = React.useMemo(() => ingredientsData.reduce((acc, el) => acc + el.price, 0), [ingredientsData]);
 
     const deleteIngredient = (ingredient: IIngredients) => {

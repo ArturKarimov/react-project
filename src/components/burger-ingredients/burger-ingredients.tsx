@@ -2,22 +2,20 @@ import React from 'react';
 import burgerIng from "./burger-ingredients.module.scss";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsBlock from "./ingredients-block.tsx/ingredients-block";
-import { DataContext } from "../../services/context";
 import { Modal } from "../modal/modal";
 import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import { IIngredients } from "../../common/interface";
+import {ingredientsApi} from "../../services/reducers/ingredients/ingredients-service";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('one');
     const [modalActive, setModalActive] = React.useState(false);
     const [modalData, setModalData] = React.useState<IIngredients | null>(null);
+    const { data } = ingredientsApi.useFetchAllIngredientsQuery("");
 
-    const res = React.useContext(DataContext);
-    const data = res?.data;
-
-    const buns = data?.filter(el => el.type === "bun") || [];
-    const sauces = data?.filter(el => el.type === "sauce") || [];
-    const main = data?.filter(el => el.type === "main") || [];
+    const buns = data?.data.filter(el => el.type === "bun") || [];
+    const sauces = data?.data.filter(el => el.type === "sauce") || [];
+    const main = data?.data.filter(el => el.type === "main") || [];
 
     const handleModalOpen = (content: IIngredients) => {
         setModalData(content)
