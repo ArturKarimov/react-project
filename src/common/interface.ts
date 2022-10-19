@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface IIngredients {
     _id: string,
     name: string,
