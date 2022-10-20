@@ -1,4 +1,7 @@
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -8,6 +11,16 @@
   gap: 10px;
   height: 55vh;
   overflow-y: auto;
+}
+
+.dropTarget {
+  position: relative;
+  height: 100%;
+}
+
+.dropTargetHover {
+  border: 2px dashed #8585AD;
+  border-radius: 30px;
 }
 
 .checkoutWrapper {
@@ -37,4 +50,5 @@
   display: flex;
   align-items: center;
   gap: 13.5px;
+  cursor: grab;
 }

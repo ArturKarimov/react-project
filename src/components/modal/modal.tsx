@@ -12,6 +12,7 @@ interface IModal {
     setActive: (isActive: boolean) => void;
     width?: number;
     height?: number;
+    deleteInfo?: () => void;
     children?: React.ReactNode;
 }
 
@@ -22,7 +23,8 @@ export const Modal: React.FC<IModal> = (
         setActive,
         children,
         width,
-        height
+        height,
+        deleteInfo
     }
 ) => {
 
@@ -41,6 +43,7 @@ export const Modal: React.FC<IModal> = (
     }, [active]);
 
     const onClose = () => {
+        deleteInfo && deleteInfo();
         setActive(false)
     }
 

@@ -6,11 +6,10 @@ import AppHeader from "./app-header/app-header";
 import CreatingBurger from "./creating-burger/creating-burger";
 import ErrorBoundary from "./error-boundary/error-boundary";
 import Loading from "./loading/loading";
-import {ingredientsApi} from "../services/reducers/ingredients/ingredients-service";
+import {ingredientsApi} from "../services/ingredients/ingredients-service";
 
 function App() {
     const { isLoading } = ingredientsApi.useFetchAllIngredientsQuery("");
-
     return (
         <ErrorBoundary>
                 <div className={appStyle.appWrapper}>

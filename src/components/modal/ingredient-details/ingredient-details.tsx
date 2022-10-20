@@ -1,6 +1,6 @@
 import React from "react";
 import ing from "./ingredient-details.module.scss";
-import {IIngredients} from "../../../common/interface";
+import {useAppSelector} from "../../../hooks/redux";
 
 enum Characteristics {
     Calories = "Калории, ккал",
@@ -9,11 +9,8 @@ enum Characteristics {
     Carbohydrates = "Углеводы, г"
 }
 
-export interface IIngredientDetails {
-    ingredient: IIngredients | null;
-}
-
-const IngredientDetails: React.FC<IIngredientDetails> = ({ ingredient}) => {
+const IngredientDetails = () => {
+    const { ingredient } = useAppSelector(state => state.ingredientReducer)
 
     const getInfo = (name: Characteristics, quantity: number | string) => {
         return (
