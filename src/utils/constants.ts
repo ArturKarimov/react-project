@@ -1,6 +1,6 @@
 import bunIcon from "../images/burger.png";
 
-export const baseUrl = "https://norma.nomoreparties.space/api";
+export const BASE_URL = "https://norma.nomoreparties.space/api";
 
 export const BUN = "bun";
 export const SAUCE = "sauce";

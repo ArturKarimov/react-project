@@ -3,34 +3,41 @@ import bc from "./burger-constructor.module.scss";
 import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
-import {IIngredient} from "../../common/interface";
 import {BOTTOM, BUN, defaultBun, TOP} from "../../utils/constants";
 import {ingredientsApi} from "../../services/ingredients/ingredients-service";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
-import {constructorSlice} from "../../services/constructor/constructor-slice";
+import {addBun, addIngredient} from "../../services/constructor/constructor-slice";
 import {useDrop} from "react-dnd";
-import {v4 as uuidv4} from "uuid";
-import DraggableItem from "./draggable-item/draggable-item";
 import EmptyDropTarget from "./empty-drop-target/empty-drop-target";
+import DraggableItems from "./draggable-items/draggable-items";
+import Loading from "../loading/loading";
+import {clearOrder, orderInfo} from "../../services/order/order-slice";
 
 const BurgerConstructor = () => {
     const {data: ingredients} = ingredientsApi.useFetchAllIngredientsQuery("");
     const dispatch = useAppDispatch();
-    const {deleteIngredient: deleteIngredientItem, addIngredient, addBun} = constructorSlice.actions;
-    const {ingredients: constructorIngredients} = useAppSelector(state => state.constructorReducer)
+    const {ingredients: constructorIngredients, bun: bunItem} = useAppSelector(state => state.constructorReducer)
+    const [getOrderInfo, {
+        isLoading,
+        error
+    }] = ingredientsApi.useFetchOrderInfoMutation({fixedCacheKey: "orderCashe"})
 
     const [modalActive, setModalActive] = React.useState(false);
 
-    const bun = React.useMemo(() => constructorIngredients.find(b => b.type === BUN), [constructorIngredients]);
-    const totalPrice = React.useMemo(() => constructorIngredients.reduce((acc, el) => acc + el.price, 0), [constructorIngredients]) + (bun?.price || 0);
-    const selectedItems = {ingredients: constructorIngredients.map(el => el._id)};
+    const totalPrice = React.useMemo(() => {
+        return constructorIngredients.reduce((acc, el) => acc + el.price, 0) + (bunItem ? bunItem?.price * 2 : 0)
+    }, [constructorIngredients, bunItem]);
+
+    const selectedItems = bunItem ?
+        {ingredients: [bunItem?._id, ...constructorIngredients.map(el => el._id), bunItem?._id]}
+        : undefined
 
     const onDropHandler = (id: any) => {
         const draggedIngredient = ingredients?.data.find(ing => ing._id === id.id);
         if (draggedIngredient && draggedIngredient.type !== BUN) {
-            dispatch(addIngredient({ingredient: draggedIngredient, uniqID: uuidv4()}))
+            dispatch(addIngredient({ingredient: draggedIngredient}))
         } else if (draggedIngredient?.type === BUN) {
-            dispatch(addBun({ingredient: draggedIngredient, uniqID: uuidv4()}))
+            dispatch(addBun({ingredient: draggedIngredient}))
         }
     }
 
@@ -44,43 +51,39 @@ const BurgerConstructor = () => {
         })
     });
 
-    const deleteIngredient = (ingredient: IIngredient) => {
-        dispatch(deleteIngredientItem({ingredient}))
-    }
-
     const openCheckoutModal = () => {
-        setModalActive(true)
+        selectedItems && getOrderInfo(selectedItems).then((res: any) => {
+            if (res?.data?.success && !error) {
+                dispatch(orderInfo(res.data))
+                setModalActive(true)
+            }
+            if (error || !res?.data?.success) {
+                dispatch(clearOrder())
+            }
+        })
     }
 
     return (
         <div className={bc.wrapper}>
             <div className={`${bc.dropTarget} ${isHover ? bc.dropTargetHover : ""}`} ref={dropTarget}>
-                {!constructorIngredients.length ? <EmptyDropTarget/> :
+                {!constructorIngredients.length && !bunItem ? <EmptyDropTarget/> :
                     <>
                         <ConstructorElement
                             type="top"
-                            isLocked={!bun}
-                            text={(bun?.name || defaultBun.text) + TOP}
-                            price={bun?.price || defaultBun.price}
-                            thumbnail={bun?.image || defaultBun.image}
-                            handleClose={bun ? () => deleteIngredient(bun) : () => null}
+                            isLocked={true}
+                            text={(bunItem?.name || defaultBun.text) + TOP}
+                            price={bunItem?.price || defaultBun.price}
+                            thumbnail={bunItem?.image || defaultBun.image}
                         />
                         <div className={bc.innerWrapper}>
-                            {constructorIngredients.filter(el => el.type !== BUN).map((ing, index) =>
-                                <DraggableItem
-                                    ingredient={ing}
-                                    index={index}
-                                    key={ing.uniqID}
-                                    deleteIngredient={deleteIngredient}
-                                />)}
+                            <DraggableItems/>
                         </div>
                         <ConstructorElement
                             type="bottom"
-                            isLocked={!bun}
-                            text={(bun?.name || defaultBun.text) + BOTTOM}
-                            price={bun?.price || defaultBun.price}
-                            thumbnail={bun?.image || defaultBun.image}
-                            handleClose={bun ? () => deleteIngredient(bun) : () => null}
+                            isLocked={true}
+                            text={(bunItem?.name || defaultBun.text) + BOTTOM}
+                            price={bunItem?.price || defaultBun.price}
+                            thumbnail={bunItem?.image || defaultBun.image}
                         />
                     </>
                 }
@@ -94,14 +97,15 @@ const BurgerConstructor = () => {
                     type="primary"
                     size="large"
                     htmlType="button"
-                    disabled={constructorIngredients.length === 0}
+                    disabled={!bunItem}
                     onClick={openCheckoutModal}>
                     Оформить заказ
                 </Button>
             </div>
             <Modal active={modalActive} setActive={setModalActive} width={720} height={718}>
-                <OrderDetails selectedItems={selectedItems}/>
+                <OrderDetails />
             </Modal>
+            {isLoading && <Loading />}
         </div>
     );
 };

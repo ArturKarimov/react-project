@@ -1,6 +1,5 @@
 import {IIngredient} from "../../common/interface";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BUN} from "../../utils/constants";
+import {createSlice, PayloadAction, nanoid} from "@reduxjs/toolkit";
 
 interface IConstructorState {
     ingredients: IIngredient[];
@@ -9,7 +8,6 @@ interface IConstructorState {
 
 interface IPayloadAction {
     ingredient: IIngredient;
-    uniqID?: string;
 }
 
 interface IMovePayloadAction {
@@ -30,34 +28,17 @@ export const constructorSlice = createSlice({
             const findElement = state.ingredients.find(el => el._id === draggedElement._id);
             state.ingredients.push({
                 ...action.payload.ingredient,
-                uniqID: action.payload.uniqID,
+                uniqID: nanoid(),
                 count: findElement && findElement.count ? findElement.count++ : 1
             })
         },
         deleteIngredient: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
-            const findElement = state.ingredients.find(el => el._id === action.payload.ingredient._id);
-            const decreaseCountElement = {
-                ...findElement,
-                count: findElement?.count ? findElement.count-- : 0
-            }
             state.ingredients = state.ingredients.filter(ing => ing.uniqID !== action.payload.ingredient.uniqID)
-            state.ingredients.map((el) => el._id === findElement?._id ? decreaseCountElement : el)
         },
         addBun: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
-            const bun = state.ingredients.find(ing => ing.type === BUN);
-            if (!bun) {
-                state.ingredients.push({
-                    ...action.payload.ingredient,
-                    uniqID: action.payload.uniqID,
-                    count: 2
-                })
-            } else {
-                state.ingredients = state.ingredients.filter(ing => ing.type !== BUN)
-                state.ingredients.push({
-                    ...action.payload.ingredient,
-                    uniqID: action.payload.uniqID,
-                    count: 2
-                })
+            state.bun = {
+                ...action.payload.ingredient,
+                count: 2
             }
         },
         moveIngredient: (state: IConstructorState, action: PayloadAction<IMovePayloadAction>) => {
@@ -68,4 +49,5 @@ export const constructorSlice = createSlice({
     }
 })
 
+export const {addIngredient, addBun, deleteIngredient, moveIngredient} = constructorSlice.actions;
 export default constructorSlice.reducer

@@ -1,13 +1,15 @@
 import {configureStore, combineReducers} from "@reduxjs/toolkit";
 
-import constructorReducer from "./constructor/constructor-slice";
-import ingredientReducer from "./ingredient/ingredient-slice";
-import {ingredientsApi} from "./ingredients/ingredients-service";
+import constructorReducer from "../constructor/constructor-slice";
+import ingredientReducer from "../ingredient/ingredient-slice";
+import orderReducer from "../order/order-slice";
+import {ingredientsApi} from "../ingredients/ingredients-service";
 
 
 const rootReducer = combineReducers({
     constructorReducer,
     ingredientReducer,
+    orderReducer,
     [ingredientsApi.reducerPath]: ingredientsApi.reducer
 })
 

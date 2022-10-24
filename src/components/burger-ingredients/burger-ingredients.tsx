@@ -6,9 +6,9 @@ import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import {IIngredient} from "../../common/interface";
 import {ingredientsApi} from "../../services/ingredients/ingredients-service";
 import {useAppDispatch} from "../../hooks/redux";
-import {ingredientSlice} from "../../services/ingredient/ingredient-slice";
 import {BUN, MAIN, SAUCE} from "../../utils/constants";
 import Tabs from "./tabs";
+import {deleteIngredientInfo, getIngredientInfo} from "../../services/ingredient/ingredient-slice";
 
 const BurgerIngredients = () => {
     const [currentTab, setCurrentTab] = React.useState("bun");
@@ -16,7 +16,6 @@ const BurgerIngredients = () => {
     const dispatch = useAppDispatch();
 
     const {data} = ingredientsApi.useFetchAllIngredientsQuery("");
-    const {getIngredientInfo, deleteIngredientInfo} = ingredientSlice.actions;
 
     const refTab = React.useRef<HTMLDivElement | any>(null)
     const refBuns = React.useRef<HTMLDivElement | any>(null)
@@ -24,9 +23,15 @@ const BurgerIngredients = () => {
     const refMains = React.useRef<HTMLDivElement | any>(null)
     const scrollRef = React.useRef<HTMLDivElement | any>(null)
 
-    const buns = data?.data.filter(el => el.type === BUN) || [];
-    const sauces = data?.data.filter(el => el.type === SAUCE) || [];
-    const main = data?.data.filter(el => el.type === MAIN) || [];
+    const buns = React.useMemo(() => {
+        return data?.data.filter(el => el.type === BUN) || []
+    }, [data?.data]);
+    const sauces = React.useMemo(() => {
+        return data?.data.filter(el => el.type === SAUCE) || []
+    }, [data?.data]);
+    const main = React.useMemo(() => {
+        return data?.data.filter(el => el.type === MAIN) || []
+    }, [data?.data]);
 
     const handleModalOpen = (content: IIngredient) => {
         setModalActive(true)
@@ -51,7 +56,7 @@ const BurgerIngredients = () => {
     }
 
     return (
-        <section className={burgerIng.wrapper}>
+        <section className={burgerIng.wrapper} >
             <div className={burgerIng.tabs} ref={refTab}>
                 <Tabs active={currentTab} setActive={setCurrentTab}/>
             </div>

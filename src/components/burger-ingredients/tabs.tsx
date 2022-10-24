@@ -15,6 +15,8 @@ interface ITabs {
 }
 
 const Tabs: React.FC<ITabs> = ({active, setActive}) => {
+
+
     return (
         <div className={tabStyle.tabs}>
             {tabs.map(tab => {

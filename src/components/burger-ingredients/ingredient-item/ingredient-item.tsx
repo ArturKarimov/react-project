@@ -14,12 +14,15 @@ export interface IngredientItemProps {
 
 const IngredientItem: React.FC<IngredientItemProps> = ({ingredient, handleModalOpen}) => {
 
-    const {ingredients} = useAppSelector(state => state.constructorReducer)
+    const {ingredients, bun} = useAppSelector(state => state.constructorReducer);
 
-    const findIngredient = ingredients.find(el => el._id === ingredient._id);
-    const filterIngredient = ingredients.filter(el => el._id === ingredient._id);
-    const isBun = findIngredient?.type === BUN;
-    const count = isBun ? findIngredient.count : filterIngredient.length;
+    const isBun = React.useMemo(() => {
+        return ingredient?.type === BUN && ingredient._id === bun?._id
+    }, [ingredient, bun]);
+
+    const count = isBun ? bun?.count : ingredients.filter(el => {
+        return el._id === ingredient._id
+    }).length;
 
     const [{opacity}, dragRef] = useDrag({
         type: "ingredient",
@@ -45,7 +48,7 @@ const IngredientItem: React.FC<IngredientItemProps> = ({ingredient, handleModalO
             <p className="text text_type_main-default">
                 {ingredient.name}
             </p>
-            {findIngredient?.count && count && <Counter count={count} size="default"/>}
+            {count && <Counter count={count} size="default"/>}
         </div>
     );
 };

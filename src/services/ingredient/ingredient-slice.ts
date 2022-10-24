@@ -22,4 +22,5 @@ export const ingredientSlice = createSlice({
     }
 })
 
-export default ingredientSlice.reducer
+export const {getIngredientInfo, deleteIngredientInfo} = ingredientSlice.actions;
+export default ingredientSlice.reducer;

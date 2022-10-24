@@ -3,8 +3,8 @@ import bc from "../burger-constructor.module.scss";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IIngredient} from "../../../common/interface";
 import {useDrag, useDrop, XYCoord} from "react-dnd";
-import {constructorSlice} from "../../../services/constructor/constructor-slice";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {moveIngredient} from "../../../services/constructor/constructor-slice";
 
 interface IDraggableItem {
     ingredient: IIngredient;
@@ -21,16 +21,12 @@ interface DragItem {
 const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngredient}) => {
 
     const {ingredients} = useAppSelector(state => state.constructorReducer)
-
-    const {moveIngredient} = constructorSlice.actions;
     const dispatch = useAppDispatch();
 
     const ref = React.useRef<HTMLDivElement>(null)
-    const [, drop] = useDrop<
-        DragItem,
-        void
-        >({
-        accept: "draggable-item",
+    const [, drop] = useDrop<DragItem,
+        void>({
+        accept: "draggable-items",
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
@@ -56,15 +52,14 @@ const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngre
                 return
             }
             item.index = hoverIndex
-            dispatch(moveIngredient({ dragIndex, hoverIndex }))
-
-        },
+            dispatch(moveIngredient({dragIndex, hoverIndex}))
+        }
     })
 
-    const [{ isDragging }, drag] = useDrag({
-        type: "draggable-item",
+    const [{isDragging}, drag] = useDrag({
+        type: "draggable-items",
         item: () => {
-            return { id: ingredient.uniqID, index }
+            return {id: ingredient.uniqID, index}
         },
         collect: (monitor: any) => ({
             isDragging: monitor.isDragging(),
@@ -74,6 +69,10 @@ const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngre
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
+    const onDeleteIconClick = () => {
+        deleteIngredient(ingredient)
+    }
+
     return (
         <div className={bc.dragItem} ref={ref} style={{opacity}}>
             <DragIcon type="primary"/>
@@ -81,7 +80,7 @@ const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngre
                 text={ingredient.name}
                 price={ingredient.price}
                 thumbnail={ingredient.image}
-                handleClose={() => deleteIngredient(ingredient)}
+                handleClose={onDeleteIconClick}
             />
         </div>
     )
