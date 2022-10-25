@@ -1,6 +1,4 @@
-import React from "react";
-
-export interface IIngredients {
+export interface IIngredient {
     _id: string,
     name: string,
     type: string,
@@ -13,11 +11,13 @@ export interface IIngredients {
     image_mobile: string,
     image_large: string,
     __v: number;
+    uniqID?: string;
+    count?: number;
 }
 
 export interface IIngredientsData {
     success: boolean;
-    data: IIngredients[];
+    data: IIngredient[];
 }
 
 export interface IMainDataRequest<T> {

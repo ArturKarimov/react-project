@@ -2,20 +2,20 @@ import React from "react";
 import order from "./order-details.module.scss";
 
 import doneIcon from "../../../images/done.png"
-import {useRequests} from "../../../hooks/useRequests";
-import {IOrderInfoRequest, IOrderInfoResponse} from "../../../common/interface";
-import {Requests} from "../../../utils/requests/requests";
+import {IOrderInfoResponse} from "../../../common/interface";
+import {useAppSelector} from "../../../hooks/redux";
 
 interface IOrderDetails {
-    selectedItems: IOrderInfoRequest;
+    orderData?: IOrderInfoResponse;
 }
 
-const OrderDetails: React.FC<IOrderDetails> = ({selectedItems}) => {
-    const {response} = useRequests<IOrderInfoResponse>(() => Requests.getOrderDetails(selectedItems))
+const OrderDetails: React.FC<IOrderDetails> = () => {
+
+    const { order: orderData } = useAppSelector(state => state.orderReducer)
 
     return (
         <div className={order.wrapper}>
-            <p className={`text text_type_digits-large ${order.order}`}>{response?.order.number}</p>
+            <p className={`text text_type_digits-large ${order.order}`}>{orderData?.order.number}</p>
             <p className="text text_type_main-medium">идентификатор заказа</p>
             <img src={doneIcon} alt="Идентификатор заказа"/>
             <p className="text text_type_main-default">Ваш заказ начали готовить</p>
