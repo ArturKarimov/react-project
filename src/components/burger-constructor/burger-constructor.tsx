@@ -25,7 +25,7 @@ const BurgerConstructor = () => {
     const [modalActive, setModalActive] = React.useState(false);
 
     const totalPrice = React.useMemo(() => {
-        return constructorIngredients.reduce((acc, el) => acc + el.price, 0) + (bunItem ? bunItem?.price * 2 : 0)
+        return constructorIngredients.reduce((acc, el) => acc + el.price, (bunItem ? bunItem?.price * 2 : 0))
     }, [constructorIngredients, bunItem]);
 
     const selectedItems = bunItem ?

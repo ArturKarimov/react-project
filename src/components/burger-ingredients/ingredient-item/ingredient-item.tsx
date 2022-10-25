@@ -48,7 +48,7 @@ const IngredientItem: React.FC<IngredientItemProps> = ({ingredient, handleModalO
             <p className="text text_type_main-default">
                 {ingredient.name}
             </p>
-            {count ? <Counter count={count} size="default"/> : null}
+            {!!count && <Counter count={count} size="default"/>}
         </div>
     );
 };

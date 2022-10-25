@@ -8,6 +8,7 @@ interface IConstructorState {
 
 interface IPayloadAction {
     ingredient: IIngredient;
+    uniqID?: string;
 }
 
 interface IMovePayloadAction {
@@ -23,14 +24,20 @@ export const constructorSlice = createSlice({
     name: "constructor",
     initialState,
     reducers: {
-        addIngredient: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
-            const draggedElement = action.payload.ingredient;
-            const findElement = state.ingredients.find(el => el._id === draggedElement._id);
-            state.ingredients.push({
-                ...action.payload.ingredient,
-                uniqID: nanoid(),
-                count: findElement && findElement.count ? findElement.count++ : 1
-            })
+        addIngredient: {
+            reducer: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
+                const draggedElement = action.payload.ingredient;
+                const findElement = state.ingredients.find(el => el._id === draggedElement._id);
+                state.ingredients.push({
+                    ...action.payload.ingredient,
+                    uniqID: action.payload.uniqID,
+                    count: findElement && findElement.count ? findElement.count++ : 1
+                })
+            },
+            prepare: (action: IPayloadAction) => {
+                const id = nanoid();
+                return { payload: { uniqID: id, ingredient: action.ingredient } }
+            }
         },
         deleteIngredient: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
             state.ingredients = state.ingredients.filter(ing => ing.uniqID !== action.payload.ingredient.uniqID)
