@@ -12,16 +12,19 @@ import EmptyDropTarget from "./empty-drop-target/empty-drop-target";
 import DraggableItems from "./draggable-items/draggable-items";
 import Loading from "../loading/loading";
 import {clearOrder, orderInfo} from "../../services/order/order-slice";
+import {useHistory} from "react-router-dom";
 
 const BurgerConstructor = () => {
     const {data: ingredients} = ingredientsApi.useFetchAllIngredientsQuery("");
-    const dispatch = useAppDispatch();
+    const {isAuth} = useAppSelector(state => state.userReducer)
     const {ingredients: constructorIngredients, bun: bunItem} = useAppSelector(state => state.constructorReducer)
     const [getOrderInfo, {
         isLoading,
         error
     }] = ingredientsApi.useFetchOrderInfoMutation({fixedCacheKey: "orderCashe"})
 
+    const dispatch = useAppDispatch();
+    const history = useHistory()
     const [modalActive, setModalActive] = React.useState(false);
 
     const totalPrice = React.useMemo(() => {
@@ -52,15 +55,19 @@ const BurgerConstructor = () => {
     });
 
     const openCheckoutModal = () => {
-        selectedItems && getOrderInfo(selectedItems).then((res: any) => {
-            if (res?.data?.success && !error) {
-                dispatch(orderInfo(res.data))
-                setModalActive(true)
-            }
-            if (error || !res?.data?.success) {
-                dispatch(clearOrder())
-            }
-        })
+        if (isAuth) {
+            selectedItems && getOrderInfo(selectedItems).then((res: any) => {
+                if (res?.data?.success && !error) {
+                    dispatch(orderInfo(res.data))
+                    setModalActive(true)
+                }
+                if (error || !res?.data?.success) {
+                    dispatch(clearOrder())
+                }
+            })
+        } else {
+            history.replace({pathname: "/login"});
+        }
     }
 
     return (
