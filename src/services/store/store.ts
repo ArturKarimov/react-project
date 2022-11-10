@@ -2,6 +2,7 @@ import {configureStore, combineReducers} from "@reduxjs/toolkit";
 
 import constructorReducer from "../constructor/constructor-slice";
 import ingredientReducer from "../ingredient/ingredient-slice";
+import ingredientsReducer from "../ingredients/ingredients-slice";
 import orderReducer from "../order/order-slice";
 import userReducer from "../user/user-slice";
 import {ingredientsApi} from "../ingredients/ingredients-service";
@@ -11,6 +12,7 @@ import {authApi} from "../auth/auth-service";
 const rootReducer = combineReducers({
     constructorReducer,
     ingredientReducer,
+    ingredientsReducer,
     orderReducer,
     userReducer,
     [ingredientsApi.reducerPath]: ingredientsApi.reducer,

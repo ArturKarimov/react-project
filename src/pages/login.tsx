@@ -2,8 +2,8 @@ import React from 'react';
 import AuthWrapper from "../components/auth-wrapper/auth-wrapper";
 import {authApi} from "../services/auth/auth-service";
 import {Cookie} from "../utils/cookie";
-import {Redirect, useHistory} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../hooks/redux";
+import {useHistory} from "react-router-dom";
+import {useAppDispatch} from "../hooks/redux";
 import {setIsAuth} from "../services/user/user-slice";
 
 const Login = () => {

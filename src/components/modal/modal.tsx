@@ -3,13 +3,12 @@ import ReactDOM from "react-dom";
 import modal from "./modal.module.scss";
 import ModalHeader from "./modal-header/modal-header";
 import ModalOverlay from "./modal-overlay/modal-overlay";
+import {useHistory, useLocation} from "react-router-dom";
 
 const modalRoot = document.getElementById("modals") as Element;
 
 interface IModal {
     title?: string;
-    active: boolean;
-    setActive: (isActive: boolean) => void;
     width?: number;
     height?: number;
     deleteInfo?: () => void;
@@ -19,8 +18,6 @@ interface IModal {
 export const Modal: React.FC<IModal> = (
     {
         title = "",
-        active,
-        setActive,
         children,
         width,
         height,
@@ -28,27 +25,38 @@ export const Modal: React.FC<IModal> = (
     }
 ) => {
 
+    const location = useLocation<any>()
+    const history = useHistory();
+    const [active, setActive] = React.useState();
+    let background = location.state && location.state.background;
+
+    React.useEffect(() => {
+        if (background) {
+            setActive(background)
+        }
+    }, [background])
+
     React.useEffect(() => {
         const escHandler = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 onClose();
             }
         };
-        if (active) {
+        if (background) {
             document.addEventListener("keydown", escHandler);
         }
         return () => {
             document.removeEventListener("keydown", escHandler);
         };
-    }, [active]);
+    }, [background]);
 
     const onClose = () => {
         deleteInfo && deleteInfo();
-        setActive(false)
+        history.replace("/")
     }
 
     return ReactDOM.createPortal(
-            <ModalOverlay active={active} onClose={onClose}>
+            <ModalOverlay active={!!active} onClose={onClose}>
                 {active &&
                     <div className={modal.modalContent} style={{width, height}} onClick={e => e.stopPropagation()}>
                         <ModalHeader onClose={onClose} title={title}/>

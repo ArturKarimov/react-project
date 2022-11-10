@@ -1,8 +1,6 @@
 import React from 'react';
 import bc from "./burger-constructor.module.scss";
 import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {Modal} from "../modal/modal";
-import OrderDetails from "../modal/order-details/order-details";
 import {BOTTOM, BUN, defaultBun, TOP} from "../../utils/constants";
 import {ingredientsApi} from "../../services/ingredients/ingredients-service";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
@@ -12,10 +10,10 @@ import EmptyDropTarget from "./empty-drop-target/empty-drop-target";
 import DraggableItems from "./draggable-items/draggable-items";
 import Loading from "../loading/loading";
 import {clearOrder, orderInfo} from "../../services/order/order-slice";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 const BurgerConstructor = () => {
-    const {data: ingredients} = ingredientsApi.useFetchAllIngredientsQuery("");
+    const {ingredients} = useAppSelector(state => state.ingredientsReducer)
     const {isAuth} = useAppSelector(state => state.userReducer)
     const {ingredients: constructorIngredients, bun: bunItem} = useAppSelector(state => state.constructorReducer)
     const [getOrderInfo, {
@@ -25,7 +23,7 @@ const BurgerConstructor = () => {
 
     const dispatch = useAppDispatch();
     const history = useHistory()
-    const [modalActive, setModalActive] = React.useState(false);
+    const location = useLocation()
 
     const totalPrice = React.useMemo(() => {
         return constructorIngredients.reduce((acc, el) => acc + el.price, (bunItem ? bunItem?.price * 2 : 0))
@@ -36,7 +34,7 @@ const BurgerConstructor = () => {
         : undefined
 
     const onDropHandler = (id: any) => {
-        const draggedIngredient = ingredients?.data.find(ing => ing._id === id.id);
+        const draggedIngredient = ingredients?.find(ing => ing._id === id.id);
         if (draggedIngredient && draggedIngredient.type !== BUN) {
             dispatch(addIngredient({ingredient: draggedIngredient}))
         } else if (draggedIngredient?.type === BUN) {
@@ -59,7 +57,7 @@ const BurgerConstructor = () => {
             selectedItems && getOrderInfo(selectedItems).then((res: any) => {
                 if (res?.data?.success && !error) {
                     dispatch(orderInfo(res.data))
-                    setModalActive(true)
+                    history.replace({pathname: `/order/${res.data.order.number}`, state: { background: location }});
                 }
                 if (error || !res?.data?.success) {
                     dispatch(clearOrder())
@@ -109,9 +107,6 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            <Modal active={modalActive} setActive={setModalActive} width={720} height={718}>
-                <OrderDetails />
-            </Modal>
             {isLoading && <Loading />}
         </div>
     );

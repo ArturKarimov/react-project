@@ -6,6 +6,7 @@ import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from 'react-router-dom';
 import {IAuthRequest} from "../../common/interface";
 import {formatErrorMessage} from "../../utils/formatErrorMessage";
+import {useForm} from "../../hooks/useForm";
 
 interface IAuthWrapperProps {
     title: string;
@@ -33,15 +34,15 @@ interface IAuthActions {
 }
 
 const AuthWrapper: React.FC<IAuthWrapperProps> = ({title, inputs, button, actions}) => {
-    const [value, setValue] = React.useState<any>({
+    const {values, setValues} = useForm({
         name: "",
         email: "",
         password: "",
         token: ""
-    })
+    });
 
     const takeRequireFields = (): IAuthRequest | unknown => {
-        return Object.fromEntries(Object.entries(value).filter(([_, val]) => val !== ""));
+        return Object.fromEntries(Object.entries(values).filter(([_, val]) => val !== ""));
     }
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -56,8 +57,8 @@ const AuthWrapper: React.FC<IAuthWrapperProps> = ({title, inputs, button, action
                     {title}
                 </p>
                 {inputs.map((input, index) => <BaseInput
-                    value={value}
-                    setValue={setValue}
+                    value={values}
+                    setValue={setValues}
                     key={index}
                     placeholder={input.placeholder}
                     icon={input.icon}

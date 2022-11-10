@@ -6,6 +6,8 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {authApi} from "../../services/auth/auth-service";
 import {setIsEditUser} from "../../services/user/user-slice";
+import {useForm} from "../../hooks/useForm";
+import {IUserInfo} from "../../common/interface";
 
 interface IProfileField {
     placeholder: string;
@@ -25,10 +27,10 @@ const Profile = () => {
     const {user, isEdit} = useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch();
 
-    const [value, setValue] = React.useState({
+    const {values, setValues} = useForm<IUserInfo>({
         name: user?.name || "",
         email: user?.email || ""
-    })
+    });
 
     const [prevValue, setPrevValue] = React.useState({
         name: user?.name || "",
@@ -37,16 +39,16 @@ const Profile = () => {
 
     React.useEffect(() => {
         if (prevValue.name || prevValue.email) {
-            if (value.name !== prevValue.name || value.email !== prevValue.email) {
+            if (values.name !== prevValue.name || values.email !== prevValue.email) {
                 dispatch(setIsEditUser(true))
             } else {
                 dispatch(setIsEditUser(false))
             }
         }
-    }, [value, prevValue])
+    }, [values, prevValue])
 
     React.useEffect(() => {
-        setValue({
+        setValues({
             name: user?.name || "",
             email: user?.email || ""
         })
@@ -64,11 +66,11 @@ const Profile = () => {
 
     const handleUpdateUser = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
-        updateUser(value)
+        updateUser(values)
     }
 
     const resetProfileEdit = () => {
-        setValue(prevValue)
+        setValues(prevValue)
     }
 
     return (
@@ -83,8 +85,8 @@ const Profile = () => {
                             name={el.name}
                             type={el.type}
                             key={el.name}
-                            value={value}
-                            setValue={setValue}
+                            value={values}
+                            setValue={setValues}
                         />)}
                     {isEdit &&
                         <div className={styles.buttons}>

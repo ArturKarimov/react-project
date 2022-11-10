@@ -1,21 +1,17 @@
 import React from 'react';
 import burgerIng from "./burger-ingredients.module.scss";
 import IngredientsBlock from "./ingredients-block.tsx/ingredients-block";
-import {Modal} from "../modal/modal";
-import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import {IIngredient} from "../../common/interface";
-import {ingredientsApi} from "../../services/ingredients/ingredients-service";
-import {useAppDispatch} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {BUN, MAIN, SAUCE} from "../../utils/constants";
 import Tabs from "./tabs";
-import {deleteIngredientInfo, getIngredientInfo} from "../../services/ingredient/ingredient-slice";
+import {getIngredientInfo} from "../../services/ingredient/ingredient-slice";
 
 const BurgerIngredients = () => {
-    const [currentTab, setCurrentTab] = React.useState("bun");
-    const [modalActive, setModalActive] = React.useState(false);
-    const dispatch = useAppDispatch();
+    const {ingredients} = useAppSelector(state => state.ingredientsReducer)
 
-    const {data} = ingredientsApi.useFetchAllIngredientsQuery("");
+    const [currentTab, setCurrentTab] = React.useState("bun");
+    const dispatch = useAppDispatch();
 
     const refTab = React.useRef<HTMLDivElement | any>(null)
     const refBuns = React.useRef<HTMLDivElement | any>(null)
@@ -24,22 +20,17 @@ const BurgerIngredients = () => {
     const scrollRef = React.useRef<HTMLDivElement | any>(null)
 
     const buns = React.useMemo(() => {
-        return data?.data.filter(el => el.type === BUN) || []
-    }, [data?.data]);
+        return ingredients?.filter(el => el.type === BUN) || []
+    }, [ingredients]);
     const sauces = React.useMemo(() => {
-        return data?.data.filter(el => el.type === SAUCE) || []
-    }, [data?.data]);
+        return ingredients?.filter(el => el.type === SAUCE) || []
+    }, [ingredients]);
     const main = React.useMemo(() => {
-        return data?.data.filter(el => el.type === MAIN) || []
-    }, [data?.data]);
+        return ingredients?.filter(el => el.type === MAIN) || []
+    }, [ingredients]);
 
     const handleModalOpen = (content: IIngredient) => {
-        setModalActive(true)
         dispatch(getIngredientInfo(content))
-    }
-
-    const handleModalClose = () => {
-        dispatch(deleteIngredientInfo())
     }
 
     const onScroll = () => {
@@ -68,10 +59,6 @@ const BurgerIngredients = () => {
                 <IngredientsBlock name="Начинки" ingredients={main} handleModalOpen={handleModalOpen}
                                   refItem={refMains}/>
             </div>
-            <Modal title="Детали ингредиента" active={modalActive} setActive={setModalActive}
-                   deleteInfo={handleModalClose} width={720}>
-                <IngredientDetails/>
-            </Modal>
         </section>
     );
 };

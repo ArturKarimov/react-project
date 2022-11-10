@@ -13,9 +13,10 @@ import {Cookie} from "../utils/cookie"
 import {useUpdateToken} from "../hooks/useUpdateToken";
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import {setIsAuth, setUserInfo} from "../services/user/user-slice";
+import {setIngredients} from "../services/ingredients/ingredients-slice";
 
 function App() {
-    const {isLoading} = ingredientsApi.useFetchAllIngredientsQuery("");
+    const {data, isLoading} = ingredientsApi.useFetchAllIngredientsQuery("");
     const [getUserInfo, {error, isError}] = authApi.endpoints.getUserInfo.useLazyQuery()
     const dispatch = useAppDispatch()
 
@@ -41,6 +42,12 @@ function App() {
             })
         }
     }, [tokenData, isAuth])
+
+    React.useEffect(() => {
+        if (data) {
+            dispatch(setIngredients(data?.data))
+        }
+    }, [data])
 
     return (
         <ErrorBoundary>

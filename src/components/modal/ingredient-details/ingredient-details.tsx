@@ -1,10 +1,8 @@
 import React from "react";
 import ing from "./ingredient-details.module.scss";
-import {useAppSelector} from "../../../hooks/redux";
-import {useHistory, useParams} from "react-router-dom";
-import {ingredientsApi} from "../../../services/ingredients/ingredients-service";
-import {log} from "util";
-import {IIngredient} from "../../../common/interface";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {useLocation, useParams} from "react-router-dom";
+import {deleteIngredientInfo, getIngredientInfo} from "../../../services/ingredient/ingredient-slice";
 
 enum Characteristics {
     Calories = "Калории, ккал",
@@ -14,30 +12,33 @@ enum Characteristics {
 }
 
 const IngredientDetails = () => {
-    const { ingredient: ingredientItem } = useAppSelector(state => state.ingredientReducer)
-    const {data} = ingredientsApi.useFetchAllIngredientsQuery("");
+    const { ingredient } = useAppSelector(state => state.ingredientReducer)
+    const {ingredients} = useAppSelector(state => state.ingredientsReducer)
 
-    const [ingredient, setIngredient] = React.useState<IIngredient | undefined>(undefined);
-    const history = useHistory()
     const params = useParams<{id?: string}>();
+    let location = useLocation<any>();
 
-    const oneIngredient = data?.data.find(el => el._id === params.id)
+    const dispatch = useAppDispatch()
+
+    const oneIngredient = React.useMemo(() => {
+        return ingredients?.find(el => el._id === params.id)
+    }, [ingredients, params.id])
 
     React.useEffect(() => {
-        setIngredient(ingredientItem)
-    }, [ingredientItem])
-
-    React.useEffect(() => {
-        if (!ingredientItem && params?.id) {
-            setIngredient(oneIngredient)
+        if (location.state?.background) {
+            location.state.background = null;
         }
-    }, [params?.id, ingredientItem])
+    }, [location.state])
 
     React.useEffect(() => {
-        window.history.pushState(null, "", `/ingredients/${ingredientItem?._id || oneIngredient?._id}`);
+            if (oneIngredient) {
+                dispatch(getIngredientInfo(oneIngredient))
+            }
+    }, [oneIngredient])
 
-        return () => history.replace({pathname: "/"});
-    }, [history])
+    React.useEffect((): () => void => {
+        return () => dispatch(deleteIngredientInfo())
+    }, [])
 
     const getInfo = (name: Characteristics, quantity: number | string) => {
         return (
