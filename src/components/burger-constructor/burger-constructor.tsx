@@ -4,7 +4,7 @@ import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-deve
 import {BOTTOM, BUN, defaultBun, TOP} from "../../utils/constants";
 import {ingredientsApi} from "../../services/ingredients/ingredients-service";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
-import {addBun, addIngredient} from "../../services/constructor/constructor-slice";
+import {addBun, addIngredient, clearConstructor} from "../../services/constructor/constructor-slice";
 import {useDrop} from "react-dnd";
 import EmptyDropTarget from "./empty-drop-target/empty-drop-target";
 import DraggableItems from "./draggable-items/draggable-items";
@@ -58,6 +58,7 @@ const BurgerConstructor = () => {
                 if (res?.data?.success && !error) {
                     dispatch(orderInfo(res.data))
                     history.replace({pathname: `/order/${res.data.order.number}`, state: { background: location }});
+                    dispatch(clearConstructor())
                 }
                 if (error || !res?.data?.success) {
                     dispatch(clearOrder())
