@@ -1,6 +1,8 @@
 import React from "react";
 import ing from "./ingredient-details.module.scss";
-import {useAppSelector} from "../../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {useLocation, useParams} from "react-router-dom";
+import {deleteIngredientInfo, getIngredientInfo} from "../../../services/ingredient/ingredient-slice";
 
 enum Characteristics {
     Calories = "Калории, ккал",
@@ -11,6 +13,32 @@ enum Characteristics {
 
 const IngredientDetails = () => {
     const { ingredient } = useAppSelector(state => state.ingredientReducer)
+    const {ingredients} = useAppSelector(state => state.ingredientsReducer)
+
+    const params = useParams<{id?: string}>();
+    let location = useLocation<any>();
+
+    const dispatch = useAppDispatch()
+
+    const oneIngredient = React.useMemo(() => {
+        return ingredients?.find(el => el._id === params.id)
+    }, [ingredients, params.id])
+
+    React.useEffect(() => {
+        if (location.state?.background) {
+            location.state.background = null;
+        }
+    }, [location.state])
+
+    React.useEffect(() => {
+            if (oneIngredient) {
+                dispatch(getIngredientInfo(oneIngredient))
+            }
+    }, [oneIngredient])
+
+    React.useEffect((): () => void => {
+        return () => dispatch(deleteIngredientInfo())
+    }, [])
 
     const getInfo = (name: Characteristics, quantity: number | string) => {
         return (

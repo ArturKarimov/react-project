@@ -15,3 +15,13 @@ export const defaultBun = {
     image: bunIcon,
     isLocked: true
 }
+
+export const FORGOT_PATH = "/forgot-password"
+
+export const ErrorMessages = {
+    "User already exists": "Пользователь с таким e-mail уже зарегистрирован",
+    "Email, password and name are required fields": "Заполните все поля и повторите попытку",
+    "PARSING_ERROR": "Проверьте корректность введенных данных и повторите попытку",
+    "email or password are incorrect": "Введен неверный e-mail или пароль",
+    "Invalid credentials provided": "Введен некорректный код из письма"
+};

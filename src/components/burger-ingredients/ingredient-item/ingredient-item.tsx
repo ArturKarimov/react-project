@@ -6,7 +6,6 @@ import {useDrag} from "react-dnd";
 import {useAppSelector} from "../../../hooks/redux";
 import {BUN} from "../../../utils/constants";
 
-
 export interface IngredientItemProps {
     ingredient: IIngredient;
     handleModalOpen: (content: IIngredient) => void;

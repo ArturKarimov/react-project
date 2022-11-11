@@ -52,9 +52,13 @@ export const constructorSlice = createSlice({
             const dragIndex = action.payload.dragIndex;
             const hoverIndex = action.payload.hoverIndex;
             state.ingredients.splice(hoverIndex, 0, state.ingredients.splice(dragIndex, 1)[0]);
+        },
+        clearConstructor: (state: IConstructorState) => {
+            state.ingredients = [];
+            state.bun = undefined;
         }
     }
 })
 
-export const {addIngredient, addBun, deleteIngredient, moveIngredient} = constructorSlice.actions;
+export const {addIngredient, addBun, deleteIngredient, moveIngredient, clearConstructor} = constructorSlice.actions;
 export default constructorSlice.reducer

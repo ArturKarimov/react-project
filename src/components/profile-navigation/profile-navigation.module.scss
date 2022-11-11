@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  padding: 16px;
+
+  & a {
+    text-decoration: none;
+  }
+}
+
+.link {
+  width: 320px;
+  height: 64px;
+  cursor: pointer;
+
+  &:hover p {
+    color: #fff;
+    transition: all ease-in-out 0.2s;
+  }
+}
+
+.activeLink p {
+  color: #fff;
+}
