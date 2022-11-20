@@ -12,6 +12,10 @@ import Loading from "../loading/loading";
 import {clearOrder, orderInfo} from "../../services/order/order-slice";
 import {useHistory, useLocation} from "react-router-dom";
 
+interface IDropData {
+    id: string
+}
+
 const BurgerConstructor = () => {
     const {ingredients} = useAppSelector(state => state.ingredientsReducer)
     const {isAuth} = useAppSelector(state => state.userReducer)
@@ -19,11 +23,11 @@ const BurgerConstructor = () => {
     const [getOrderInfo, {
         isLoading,
         error
-    }] = ingredientsApi.useFetchOrderInfoMutation({fixedCacheKey: "orderCashe"})
+    }] = ingredientsApi.useFetchOrderInfoMutation()
 
     const dispatch = useAppDispatch();
-    const history = useHistory()
-    const location = useLocation()
+    const history = useHistory();
+    const location = useLocation();
 
     const totalPrice = React.useMemo(() => {
         return constructorIngredients.reduce((acc, el) => acc + el.price, (bunItem ? bunItem?.price * 2 : 0))
@@ -33,7 +37,7 @@ const BurgerConstructor = () => {
         {ingredients: [bunItem?._id, ...constructorIngredients.map(el => el._id), bunItem?._id]}
         : undefined
 
-    const onDropHandler = (id: any) => {
+    const onDropHandler = (id: IDropData) => {
         const draggedIngredient = ingredients?.find(ing => ing._id === id.id);
         if (draggedIngredient && draggedIngredient.type !== BUN) {
             dispatch(addIngredient({ingredient: draggedIngredient}))
@@ -44,7 +48,7 @@ const BurgerConstructor = () => {
 
     const [{isHover}, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(itemId) {
+        drop(itemId: IDropData) {
             onDropHandler(itemId);
         },
         collect: monitor => ({
@@ -54,15 +58,18 @@ const BurgerConstructor = () => {
 
     const openCheckoutModal = () => {
         if (isAuth) {
-            selectedItems && getOrderInfo(selectedItems).then((res: any) => {
-                if (res?.data?.success && !error) {
-                    dispatch(orderInfo(res.data))
-                    history.replace({pathname: `/order/${res.data.order.number}`, state: { background: location }});
-                    dispatch(clearConstructor())
+            selectedItems && getOrderInfo(selectedItems).then((res) => {
+                if("data" in res){
+                    if (res?.data?.success && !error) {
+                        dispatch(orderInfo(res.data))
+                        history.replace({pathname: `/order/${res?.data.order.number}`, state: {background: location}});
+                        dispatch(clearConstructor())
+                    }
+                    if (error || !res?.data?.success) {
+                        dispatch(clearOrder())
+                    }
                 }
-                if (error || !res?.data?.success) {
-                    dispatch(clearOrder())
-                }
+
             })
         } else {
             history.replace({pathname: "/login"});
@@ -108,7 +115,7 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            {isLoading && <Loading />}
+            {isLoading && <Loading/>}
         </div>
     );
 };

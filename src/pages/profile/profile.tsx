@@ -79,7 +79,7 @@ const Profile = () => {
             <form className={styles.formWrapper} onSubmit={handleUpdateUser}>
                 <div className={styles.inputs}>
                     {profileFields.map((el) =>
-                        <BaseInput
+                        <BaseInput<IUserInfo>
                             placeholder={el.placeholder}
                             icon={"EditIcon"}
                             name={el.name}

@@ -1,8 +1,8 @@
-import {IOrderInfoResponse} from "../../common/interface";
+import {IOrderInfo} from "../../common/interface";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface OrderState {
-    order?: IOrderInfoResponse;
+    order?: IOrderInfo;
 }
 
 const initialState: OrderState = {
@@ -13,7 +13,7 @@ export const orderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
-        orderInfo: (state: OrderState, action: PayloadAction<IOrderInfoResponse>) => {
+        orderInfo: (state: OrderState, action: PayloadAction<IOrderInfo>) => {
             state.order = action.payload;
         },
         clearOrder: (state: OrderState) => {

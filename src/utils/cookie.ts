@@ -7,7 +7,7 @@ export class Cookie {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    static setCookie(name: string, value: string, props?: any) {
+    static setCookie(name: string, value: string, props?: { [x: string]: unknown; expires?: number; } | undefined) {
         props = props || {};
         value = encodeURIComponent(value);
         let updatedCookie = name + '=' + value;

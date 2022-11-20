@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {BASE_URL} from "../../utils/constants";
-import {IIngredientsData, IOrderInfoRequest, IOrderInfoResponse} from "../../common/interface";
+import {IIngredientsData, IOrderInfo, IOrderInfoRequest} from "../../common/interface";
 import {Cookie} from "../../utils/cookie";
 
 export const ingredientsApi = createApi({
@@ -12,7 +12,7 @@ export const ingredientsApi = createApi({
                 url: "/ingredients"
             })
         }),
-        fetchOrderInfo: build.mutation<IOrderInfoResponse, IOrderInfoRequest>({
+        fetchOrderInfo: build.mutation<IOrderInfo, IOrderInfoRequest>({
             query: (items) => ({
                 url: "/orders",
                 method: "POST",

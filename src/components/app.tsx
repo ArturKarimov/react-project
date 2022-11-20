@@ -16,11 +16,10 @@ import {setIsAuth, setUserInfo} from "../services/user/user-slice";
 import {setIngredients} from "../services/ingredients/ingredients-slice";
 
 function App() {
+    const {isAuth} = useAppSelector(state => state.userReducer);
+    const dispatch = useAppDispatch();
     const {data, isLoading} = ingredientsApi.useFetchAllIngredientsQuery("");
-    const [getUserInfo, {error, isError}] = authApi.endpoints.getUserInfo.useLazyQuery()
-    const dispatch = useAppDispatch()
-
-    const {isAuth} = useAppSelector(state => state.userReducer)
+    const [getUserInfo, {error, isError}] = authApi.endpoints.getUserInfo.useLazyQuery();
 
     const accessToken = Cookie.getCookie("accessToken");
     const refreshToken = Cookie.getCookie("refreshToken");

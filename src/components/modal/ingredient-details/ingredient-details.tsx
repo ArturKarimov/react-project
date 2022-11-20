@@ -3,6 +3,7 @@ import ing from "./ingredient-details.module.scss";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {useLocation, useParams} from "react-router-dom";
 import {deleteIngredientInfo, getIngredientInfo} from "../../../services/ingredient/ingredient-slice";
+import {ILocationState} from "../../../common/interface";
 
 enum Characteristics {
     Calories = "Калории, ккал",
@@ -16,7 +17,7 @@ const IngredientDetails = () => {
     const {ingredients} = useAppSelector(state => state.ingredientsReducer)
 
     const params = useParams<{id?: string}>();
-    let location = useLocation<any>();
+    let location = useLocation() as ILocationState;
 
     const dispatch = useAppDispatch()
 
