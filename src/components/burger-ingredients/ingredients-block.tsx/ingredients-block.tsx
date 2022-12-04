@@ -8,7 +8,7 @@ interface IIngredientsBlock {
     name: string;
     ingredients: IIngredient[];
     handleModalOpen: (content: IIngredient) => void;
-    refItem: React.RefObject<any>;
+    refItem: React.RefObject<HTMLDivElement>;
 }
 
 const IngredientsBlock: React.FC<IIngredientsBlock> = ({ name, ingredients , handleModalOpen, refItem }) => {

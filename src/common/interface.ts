@@ -23,27 +23,25 @@ export interface IIngredientsData {
     data: IIngredient[];
 }
 
-export interface IMainDataRequest<T> {
-    response: T | null,
-    loading: boolean,
-    hasError: boolean
-}
-
 export interface IOrderInfoRequest {
     ingredients: string[];
 }
 
-export interface IOrderInfoResponse {
-    name: string,
+export interface IOrderInfo {
+    name: string;
     order: {
         number: number
-    },
-    success: boolean
+    };
+    success: boolean;
+}
+
+export interface IOrderInfoResponse {
+    data: IOrderInfo;
 }
 
 export type IAuthRequest = IRegisterRequest & ILoginRequest & IForgotPasswordRequest & IResetPasswordRequest
 
-// export type IFetchError = FetchBaseQueryError | SerializedError | undefined
+export type IBaseRTKError = FetchBaseQueryError | SerializedError | undefined;
 
 export interface IFetchError {
     status: number;
@@ -99,3 +97,14 @@ export interface IUserInfoResponse {
 }
 
 export type ILogoutResponse = Omit<IUserInfoResponse, "user">
+
+export interface ILocationState {
+    hash: string;
+    key: string;
+    pathname: string;
+    search: string;
+    from: string;
+    state: {
+        background: ILocationState | null;
+    };
+}

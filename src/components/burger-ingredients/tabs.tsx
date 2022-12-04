@@ -11,11 +11,12 @@ const tabs = [
 
 interface ITabs {
     active: string;
-    setActive: (tab: string) => void;
+    setActive: (tab: ITabsType) => void;
 }
 
-const Tabs: React.FC<ITabs> = ({active, setActive}) => {
+export type ITabsType = typeof BUN | typeof SAUCE | typeof MAIN | string;
 
+const Tabs: React.FC<ITabs> = ({active, setActive}) => {
 
     return (
         <div className={tabStyle.tabs}>

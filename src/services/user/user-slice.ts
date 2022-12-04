@@ -1,4 +1,4 @@
-import {IUserInfo} from "../../common/interface";
+import { IUserInfo } from "../../common/interface";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface UserState {

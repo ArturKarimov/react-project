@@ -13,8 +13,8 @@ const rootReducer = combineReducers({
     constructorReducer,
     ingredientReducer,
     ingredientsReducer,
-    orderReducer,
     userReducer,
+    orderReducer,
     [ingredientsApi.reducerPath]: ingredientsApi.reducer,
     [authApi.reducerPath]: authApi.reducer
 })

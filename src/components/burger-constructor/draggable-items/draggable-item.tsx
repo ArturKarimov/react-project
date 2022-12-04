@@ -61,7 +61,7 @@ const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngre
         item: () => {
             return {id: ingredient.uniqID, index}
         },
-        collect: (monitor: any) => ({
+        collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
     })

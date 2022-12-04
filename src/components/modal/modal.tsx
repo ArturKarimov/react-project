@@ -4,6 +4,7 @@ import modal from "./modal.module.scss";
 import ModalHeader from "./modal-header/modal-header";
 import ModalOverlay from "./modal-overlay/modal-overlay";
 import {useHistory, useLocation} from "react-router-dom";
+import {ILocationState} from "../../common/interface";
 
 const modalRoot = document.getElementById("modals") as Element;
 
@@ -25,10 +26,10 @@ export const Modal: React.FC<IModal> = (
     }
 ) => {
 
-    const location = useLocation<any>()
+    const location = useLocation() as ILocationState;
     const history = useHistory();
-    const [active, setActive] = React.useState();
-    let background = location.state && location.state.background;
+    const [active, setActive] = React.useState<ILocationState>();
+    let background = location.state && location.state?.background;
 
     React.useEffect(() => {
         if (background) {

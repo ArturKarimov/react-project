@@ -1,6 +1,7 @@
 import React from "react";
 import {Redirect, Route, RouteProps} from "react-router-dom";
 import { useAppSelector} from "../../hooks/redux";
+import {ILocationState} from "../../common/interface";
 
 export const ProtectedRouteUser: React.FC<RouteProps & {children?: React.ReactNode}> = ({children, path, exact}) => {
     const {isAuth} = useAppSelector(state => state.userReducer)
@@ -9,13 +10,13 @@ export const ProtectedRouteUser: React.FC<RouteProps & {children?: React.ReactNo
         <Route
             path={path}
             exact={exact}
-            render={({location}: any) => {
+            render={({location}) => {
                 return (
                     !isAuth ? (
                         children
                     ) : (
                         <Redirect
-                            to={location?.state?.from || '/'}
+                            to={(location?.state as ILocationState)?.from || '/'}
                         />
                     )
                 )

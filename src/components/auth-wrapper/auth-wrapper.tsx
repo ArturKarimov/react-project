@@ -4,7 +4,7 @@ import styles from "./auth-wrapper.module.scss";
 import BaseInput from "../base-input/base-input";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from 'react-router-dom';
-import {IAuthRequest} from "../../common/interface";
+import {IAuthRequest, IBaseRTKError, IFetchError} from "../../common/interface";
 import {formatErrorMessage} from "../../utils/formatErrorMessage";
 import {useForm} from "../../hooks/useForm";
 
@@ -15,7 +15,7 @@ interface IAuthWrapperProps {
         title: string,
         callback?: (data: IAuthRequest) => void;
         isLoading?: boolean;
-        error: any;
+        error: IFetchError | IBaseRTKError;
     };
     actions: IAuthActions[];
 }
@@ -33,8 +33,15 @@ interface IAuthActions {
     path?: string;
 }
 
+interface IAuthInputs {
+    name: string;
+    email: string;
+    password: string;
+    token: string;
+}
+
 const AuthWrapper: React.FC<IAuthWrapperProps> = ({title, inputs, button, actions}) => {
-    const {values, setValues} = useForm({
+    const {values, setValues} = useForm<IAuthInputs>({
         name: "",
         email: "",
         password: "",
@@ -56,7 +63,7 @@ const AuthWrapper: React.FC<IAuthWrapperProps> = ({title, inputs, button, action
                 <p className="text text_type_main-medium">
                     {title}
                 </p>
-                {inputs.map((input, index) => <BaseInput
+                {inputs.map((input, index) => <BaseInput<IAuthInputs>
                     value={values}
                     setValue={setValues}
                     key={index}
@@ -66,7 +73,8 @@ const AuthWrapper: React.FC<IAuthWrapperProps> = ({title, inputs, button, action
                     type={input.type}
                 />)}
                 {button.error && <p className={`text text_type_main-default ${styles.error}`}>
-                    {formatErrorMessage(button.error?.data?.message || button.error?.status)}
+                    {formatErrorMessage((button.error as IFetchError)?.data?.message
+                        || (button.error as IFetchError)?.status)}
                 </p>}
                 <Button type="primary" size="medium" htmlType="submit">
                     {button.isLoading ? "Загрузка.." : button.title}

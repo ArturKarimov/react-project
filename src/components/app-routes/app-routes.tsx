@@ -12,9 +12,10 @@ import {ProtectedRouteUser} from "../protected-route/protected-route-user";
 import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import {Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
+import {ILocationState} from "../../common/interface";
 
 const AppRoutes = () => {
-    const location = useLocation<any>();
+    const location = useLocation() as ILocationState;
     const background = location.state && location.state.background;
 
     return (

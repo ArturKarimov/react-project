@@ -2,12 +2,12 @@ import React from "react";
 import order from "./order-details.module.scss";
 
 import doneIcon from "../../../images/done.png"
-import {IOrderInfoResponse} from "../../../common/interface";
+import {IOrderInfo} from "../../../common/interface";
 import {useAppSelector} from "../../../hooks/redux";
 import {useParams} from "react-router-dom";
 
 interface IOrderDetails {
-    orderData?: IOrderInfoResponse;
+    orderData?: IOrderInfo;
 }
 
 const OrderDetails: React.FC<IOrderDetails> = () => {

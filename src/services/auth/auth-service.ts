@@ -60,7 +60,7 @@ export const authApi = createApi({
                 body: {token: data}
             })
         }),
-        getUserInfo: build.query<IUserInfoResponse | undefined, any>({
+        getUserInfo: build.query<IUserInfoResponse | undefined, string | undefined>({
             query: (token) => ({
                 url: "/auth/user",
                 headers: {

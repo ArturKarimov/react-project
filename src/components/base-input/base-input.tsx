@@ -1,16 +1,20 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
-export interface IBaseInput {
+type IBaseInputValue<T> = {
+    [key in keyof T]: T[key]
+}
+
+export interface IBaseInput<T> {
     placeholder: string;
     icon?: "ShowIcon" | "EditIcon" | undefined;
     name: string;
     type: "text" | "email" | "password";
-    value: any;
-    setValue: (value: any) => void;
+    value: IBaseInputValue<T>;
+    setValue: (value: IBaseInputValue<T>) => void;
 }
 
-const BaseInput: React.FC<IBaseInput> = (
+const BaseInput = <T, >(
     {
         placeholder,
         icon,
@@ -18,11 +22,10 @@ const BaseInput: React.FC<IBaseInput> = (
         type,
         value,
         setValue
-    }) => {
+    }: IBaseInput<T>) => {
 
     const [edit, setEdit] = React.useState(true)
     const [isEditType, setEditType] = React.useState(false)
-    const inputRef = useRef<any>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const targetValue = e.target.value;
@@ -53,14 +56,13 @@ const BaseInput: React.FC<IBaseInput> = (
             placeholder={placeholder}
             onChange={handleInputChange}
             icon={icon}
-            value={value[name]}
+            value={value[name as keyof IBaseInputValue<T>] as string}
             name={name}
             error={false}
             errorText={'Ошибка'}
             disabled={checkDisabledInput()}
             onIconClick={handleIconClick}
             size={'default'}
-            ref={inputRef}
         />
     );
 };
