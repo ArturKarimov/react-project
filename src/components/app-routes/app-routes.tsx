@@ -13,6 +13,8 @@ import IngredientDetails from "../modal/ingredient-details/ingredient-details";
 import {Modal} from "../modal/modal";
 import OrderDetails from "../modal/order-details/order-details";
 import {ILocationState} from "../../common/interface";
+import Feed from "../../pages/feed/feed";
+import FeedDetails from "../modal/feed-details/feed-details";
 
 const AppRoutes = () => {
     const location = useLocation() as ILocationState;
@@ -32,8 +34,21 @@ const AppRoutes = () => {
                 <ProtectedRouteGuest exact={true} path="/profile">
                     <Profile/>
                 </ProtectedRouteGuest>
-                <ProtectedRouteGuest exact={true} path="/profile/orders">
+                {!background &&
+                    <ProtectedRouteGuest path="/profile/orders/:number">
+                        <FeedDetails/>
+                    </ProtectedRouteGuest>
+                }
+                <ProtectedRouteGuest path="/profile/orders">
                     <HistoryOrders/>
+                </ProtectedRouteGuest>
+                {!background &&
+                    <Route path="/feed/:number">
+                        <FeedDetails/>
+                    </Route>
+                }
+                <ProtectedRouteGuest path="/feed">
+                    <Feed/>
                 </ProtectedRouteGuest>
                 <ProtectedRouteUser exact path="/login">
                     <Login/>
@@ -47,7 +62,7 @@ const AppRoutes = () => {
                 <ProtectedRouteUser exact path="/reset-password">
                     <ResetPassword/>
                 </ProtectedRouteUser>
-                <Redirect to="/" />
+                <Redirect to="/"/>
             </Switch>
             {
                 background &&
@@ -59,7 +74,17 @@ const AppRoutes = () => {
                     </Route>
                     <Route exact path="/order/:number">
                         <Modal width={720} height={718}>
-                            <OrderDetails />
+                            <OrderDetails/>
+                        </Modal>
+                    </Route>
+                    <Route path="/feed/:number">
+                        <Modal width={720} height={718} goBack="/feed">
+                            <FeedDetails/>
+                        </Modal>
+                    </Route>
+                    <Route exact path="/profile/orders/:number">
+                        <Modal width={720} height={718} goBack="/profile/orders">
+                            <FeedDetails/>
                         </Modal>
                     </Route>
                 </Switch>

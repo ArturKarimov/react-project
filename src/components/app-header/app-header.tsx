@@ -21,7 +21,7 @@ const AppHeader = () => {
                         <p className="text text_type_main-default">Конструктор</p>
                     </div>
                 </NavLink>
-                <NavLink exact to="/" className={headerStyles.link} activeClassName={headerStyles.activeLink}>
+                <NavLink exact to="/feed" className={headerStyles.link} activeClassName={headerStyles.activeLink}>
                     <div className={headerStyles.constructorBtn}>
                         <ListIcon type="primary"/>
                         <p className="text text_type_main-default">Лента заказов</p>

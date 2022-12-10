@@ -13,6 +13,7 @@ interface IModal {
     width?: number;
     height?: number;
     deleteInfo?: () => void;
+    goBack?: string;
     children?: React.ReactNode;
 }
 
@@ -22,6 +23,7 @@ export const Modal: React.FC<IModal> = (
         children,
         width,
         height,
+        goBack,
         deleteInfo
     }
 ) => {
@@ -53,15 +55,15 @@ export const Modal: React.FC<IModal> = (
 
     const onClose = () => {
         deleteInfo && deleteInfo();
-        history.replace("/")
+        history.replace(goBack || "/")
     }
 
     return ReactDOM.createPortal(
             <ModalOverlay active={!!active} onClose={onClose}>
                 {active &&
                     <div className={modal.modalContent} style={{width, height}} onClick={e => e.stopPropagation()}>
-                        <ModalHeader onClose={onClose} title={title}/>
                         <div className={modal.innerContent}>
+                            <ModalHeader onClose={onClose} title={title}/>
                             {children}
                         </div>
                     </div>
