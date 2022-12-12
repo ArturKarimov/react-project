@@ -106,7 +106,6 @@ export interface ILocationState {
     from: string;
     state: {
         background: ILocationState | null;
-        from: ILocationState | null;
     };
 }
 
