@@ -19,16 +19,16 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUserInfo: (state: UserState, action: PayloadAction<IUserInfo | undefined>) => {
+        setUserInfo: (state, action: PayloadAction<IUserInfo | undefined>) => {
             state.user = action.payload;
         },
-        setIsAuth: (state: UserState, action: PayloadAction<boolean>) => {
+        setIsAuth: (state, action: PayloadAction<boolean>) => {
             state.isAuth = action.payload;
         },
-        setPrevPath: (state: UserState, action: PayloadAction<string>) => {
+        setPrevPath: (state, action: PayloadAction<string>) => {
             state.prevPath = action.payload;
         },
-        setIsEditUser: (state: UserState, action: PayloadAction<boolean>) => {
+        setIsEditUser: (state, action: PayloadAction<boolean>) => {
             state.isEdit = action.payload
         }
     }

@@ -25,7 +25,7 @@ export const constructorSlice = createSlice({
     initialState,
     reducers: {
         addIngredient: {
-            reducer: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
+            reducer: (state, action: PayloadAction<IPayloadAction>) => {
                 const draggedElement = action.payload.ingredient;
                 const findElement = state.ingredients.find(el => el._id === draggedElement._id);
                 state.ingredients.push({
@@ -39,21 +39,21 @@ export const constructorSlice = createSlice({
                 return { payload: { uniqID: id, ingredient: action.ingredient } }
             }
         },
-        deleteIngredient: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
+        deleteIngredient: (state, action: PayloadAction<IPayloadAction>) => {
             state.ingredients = state.ingredients.filter(ing => ing.uniqID !== action.payload.ingredient.uniqID)
         },
-        addBun: (state: IConstructorState, action: PayloadAction<IPayloadAction>) => {
+        addBun: (state, action: PayloadAction<IPayloadAction>) => {
             state.bun = {
                 ...action.payload.ingredient,
                 count: 2
             }
         },
-        moveIngredient: (state: IConstructorState, action: PayloadAction<IMovePayloadAction>) => {
+        moveIngredient: (state, action: PayloadAction<IMovePayloadAction>) => {
             const dragIndex = action.payload.dragIndex;
             const hoverIndex = action.payload.hoverIndex;
             state.ingredients.splice(hoverIndex, 0, state.ingredients.splice(dragIndex, 1)[0]);
         },
-        clearConstructor: (state: IConstructorState) => {
+        clearConstructor: (state) => {
             state.ingredients = [];
             state.bun = undefined;
         }
