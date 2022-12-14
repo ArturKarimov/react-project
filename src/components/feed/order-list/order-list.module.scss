@@ -1,0 +1,36 @@
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.innerWrapper {
+  min-width: 50%;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.orderList {
+  display: grid;
+  grid-auto-columns: 35%;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(10, 1fr);
+  overflow-x: auto;
+  overflow-y: hidden;
+  row-gap: 8px;
+  width: 85%;
+
+  & p {
+    color: #00CCCC;
+  }
+}
+
+.orders {
+  text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
+}

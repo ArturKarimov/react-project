@@ -1,0 +1,45 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 214px;
+  padding: 24px;
+  background: #1C1C21;
+  border-radius: 40px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.innerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feedsWrapper {
+  display: flex;
+
+  & div:first-child {
+    margin-left: 0;
+  }
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  margin-right: 9px;
+
+  & svg {
+    margin-left: 9.5px;
+  }
+}
+
+.statusDone {
+  color: #00CCCC;
+}

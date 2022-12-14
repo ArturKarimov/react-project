@@ -13,7 +13,7 @@ export const ingredientsSlice = createSlice({
     name: "ingredients",
     initialState,
     reducers: {
-        setIngredients: (state: IngredientsState, action: PayloadAction<IIngredient[]>) => {
+        setIngredients: (state, action: PayloadAction<IIngredient[]>) => {
             state.ingredients = action.payload;
         }
     }

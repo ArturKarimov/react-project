@@ -108,3 +108,25 @@ export interface ILocationState {
         background: ILocationState | null;
     };
 }
+
+export interface IOrdersDetails {
+    createdAt: string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    status: "done" | string;
+    updatedAt: string;
+    _id: string;
+}
+
+export interface IOrdersFeed {
+    orders: IOrdersDetails[];
+    success: boolean;
+    total: number;
+    totalToday: number;
+}
+
+export interface IOrdersDetailsResponse {
+    success: boolean;
+    orders: IOrdersDetails[];
+}

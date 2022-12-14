@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  margin-right: 9px;
+
+  & svg {
+    margin-left: 9.5px;
+  }
+}
+
+.name {
+  flex: auto;
+  margin-left: 15px;
+}

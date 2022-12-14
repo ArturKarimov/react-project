@@ -5,8 +5,14 @@
   & form {
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
   }
+}
+
+.formWrapper {
+  position: absolute;
+  width: 480px;
+  left: 50%;
+  margin-left: -240px;
 }
 
 .inputs {

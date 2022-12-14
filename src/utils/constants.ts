@@ -1,6 +1,8 @@
 import bunIcon from "../images/burger.png";
 
 export const BASE_URL = "https://norma.nomoreparties.space/api";
+export const ALL_FEED_URL = "wss://norma.nomoreparties.space/orders/all";
+export const HISTORY_FEED_URL = "wss://norma.nomoreparties.space/orders?token=";
 
 export const BUN = "bun";
 export const SAUCE = "sauce";
@@ -25,3 +27,9 @@ export const ErrorMessages = {
     "email or password are incorrect": "Введен неверный e-mail или пароль",
     "Invalid credentials provided": "Введен некорректный код из письма"
 };
+
+export const StatusFeed = {
+    created: "Создан",
+    pending: "Готовится",
+    done: "Выполнен"
+}

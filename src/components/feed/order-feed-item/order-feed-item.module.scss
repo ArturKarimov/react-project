@@ -1,0 +1,30 @@
+.wrapper {
+  border-radius: 50%;
+  background: linear-gradient(#801AB2, #4C4CFF);
+  padding: 4px;
+  margin-left: -25px;
+}
+
+.innerWrapper {
+  display: flex;
+  align-items: center;
+  background: #131316;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(0.98);
+  }
+
+  & span {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Jet Brains Mono", sans-serif;
+    margin-left: -42px;
+    z-index: 1;
+  }
+}

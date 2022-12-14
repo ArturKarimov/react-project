@@ -29,17 +29,17 @@ function App() {
     React.useEffect(() => {
         if (accessToken && refreshToken) {
             dispatch(setIsAuth(true))
+        } else {
+            dispatch(setIsAuth(false))
         }
-    }, [])
+    }, [accessToken, refreshToken])
 
     React.useEffect(() => {
-        if (isAuth) {
-            getUserInfo(Cookie.getCookie("accessToken")).then((res) => {
-                if (res?.data?.user) {
-                    dispatch(setUserInfo(res.data.user))
-                }
-            })
-        }
+        getUserInfo(Cookie.getCookie("accessToken")).then((res) => {
+            if (res?.data?.user) {
+                dispatch(setUserInfo(res.data.user))
+            }
+        })
     }, [tokenData, isAuth])
 
     React.useEffect(() => {

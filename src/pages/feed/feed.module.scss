@@ -1,0 +1,25 @@
+.wrapper {
+  width: calc(100% - 40px);
+  margin: 0 auto 20px auto;
+}
+
+.sections {
+  display: flex;
+
+}
+
+.feedSection {
+  height: calc(100vh - 128px);
+  min-width: 50%;
+  overflow-y: auto;
+  margin-right: 60px;
+
+  & a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.title {
+  margin-bottom: 20px;
+}

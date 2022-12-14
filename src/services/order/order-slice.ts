@@ -13,10 +13,10 @@ export const orderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
-        orderInfo: (state: OrderState, action: PayloadAction<IOrderInfo>) => {
+        orderInfo: (state, action: PayloadAction<IOrderInfo>) => {
             state.order = action.payload;
         },
-        clearOrder: (state: OrderState) => {
+        clearOrder: (state) => {
             state.order = undefined
         }
     }
