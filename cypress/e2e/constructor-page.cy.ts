@@ -7,9 +7,19 @@ describe('service is available', function() {
     const bun = '[data-testid="ingredient-60d3b41abdacab0026a733c7"]';
     const sauce = '[data-testid="ingredient-60d3b41abdacab0026a733cd"]';
     const draggableSauce = '[data-testid="draggableitem-60d3b41abdacab0026a733cd"]';
+    const modal = '[data-testid="modal-content"]';
+
 
     it('should be available on localhost:3000', function() {
         cy.visit('http://localhost:3000');
+    });
+
+    it("should open and close ingredient modal", () => {
+        cy.get(bun).click();
+        cy.get(modal).should("exist");
+        cy.get(modal).contains('Флюоресцентная булка');
+        cy.get(modal).find("svg").first().click();
+        cy.get(modal).should("not.exist");
     });
 
     it('should drop bun to constructor and not remove bun', function() {
@@ -54,9 +64,9 @@ describe('service is available', function() {
         cy.url().should('eq', `${baseUrl}/`);
         cy.contains(orderTitle).click();
         cy.wait(16000);
-        const modalPopupSelector = '[data-testid="modal-content"]';
-        cy.get(modalPopupSelector).contains('Ваш заказ начали готовить');
-        cy.get(modalPopupSelector).find("svg").first().click();
+        cy.get(modal).contains('Ваш заказ начали готовить');
+        cy.get(modal).find("svg").first().click();
+        cy.get(modal).should("not.exist");
     })
 
     it("should be constructor is empty", () => {
