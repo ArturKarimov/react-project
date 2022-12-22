@@ -50,7 +50,7 @@ function App() {
 
     return (
         <ErrorBoundary>
-            <Router>
+            <Router basename="/react-burger">
                 <div className={appStyle.appWrapper}>
                     {isLoading ? <Loading/> :
                         <>
