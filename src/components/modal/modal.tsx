@@ -47,7 +47,7 @@ export const Modal: React.FC<IModal> = (
     return ReactDOM.createPortal(
         <ModalOverlay active={active} onClose={onClose}>
             {active &&
-                <div className={modal.modalContent} style={{width, height}} onClick={e => e.stopPropagation()}>
+                <div className={modal.modalContent} style={{width, height}} onClick={e => e.stopPropagation()} data-testid="modal-content">
                     <div className={modal.innerContent}>
                         <ModalHeader onClose={onClose} title={title}/>
                         {children}

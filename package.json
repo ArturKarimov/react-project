@@ -15,6 +15,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^8.3.4",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
+    "jest-fetch-mock": "^3.0.3",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
@@ -33,7 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "./node_modules/.bin/cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -52,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^12.2.0"
   }
 }

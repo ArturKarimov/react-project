@@ -36,7 +36,7 @@ const IngredientItem: React.FC<IngredientItemProps> = ({ingredient, handleModalO
     }, []);
 
     return (
-        <div className={ingItem.wrapper} onClick={openIngredientInfoModal} ref={dragRef}>
+        <div className={ingItem.wrapper} onClick={openIngredientInfoModal} ref={dragRef} data-testid={"ingredient-" + ingredient._id}>
             <div className={ingItem.imageWrapper}>
                 <img src={ingredient.image || "asa"} alt={ingredient.name} style={{opacity}}/>
             </div>
