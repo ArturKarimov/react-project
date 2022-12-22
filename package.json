@@ -61,5 +61,5 @@
     "cypress": "^12.2.0",
     "gh-pages": "^4.0.0"
   },
-  "homepage": "https://arturkarimov.github.io/react-project/"
+  "homepage": "https://arturkarimov.github.io/react-project"
 }
