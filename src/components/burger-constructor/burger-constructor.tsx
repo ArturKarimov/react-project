@@ -78,7 +78,7 @@ const BurgerConstructor = () => {
 
     return (
         <div className={bc.wrapper}>
-            <div className={`${bc.dropTarget} ${isHover ? bc.dropTargetHover : ""}`} ref={dropTarget}>
+            <div className={`${bc.dropTarget} ${isHover ? bc.dropTargetHover : ""}`} ref={dropTarget} data-testid="drop-target">
                 {!constructorIngredients.length && !bunItem ? <EmptyDropTarget/> :
                     <>
                         <ConstructorElement

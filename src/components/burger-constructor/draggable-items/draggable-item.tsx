@@ -74,7 +74,7 @@ const DraggableItem: React.FC<IDraggableItem> = ({ingredient, index, deleteIngre
     }
 
     return (
-        <div className={bc.dragItem} ref={ref} style={{opacity}}>
+        <div className={bc.dragItem} ref={ref} style={{opacity}} data-testid={"draggableitem-" + ingredient._id}>
             <DragIcon type="primary"/>
             <ConstructorElement
                 text={ingredient.name}
