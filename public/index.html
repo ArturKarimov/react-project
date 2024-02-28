@@ -27,7 +27,7 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
           navigator.serviceWorker.register("serviceWorker.js", {
-            scope: "/react-project"
+            scope: "/react-project/"
           }).then(function(registration) {
             console.log("ServiceWorker registration successful", registration.scope);
           }, function(err) {
