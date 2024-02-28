@@ -2,6 +2,7 @@ let CACHE_NAME = "react-burger-pwa";
 const urlsToCache = [
 "%PUBLIC_URL%/",
 "%PUBLIC_URL%/index.html",
+"%PUBLIC_URL%/manifest.json",
 "/static/js/main.000acb0e.js",
 "/static/css/main.895bd321.css"
 ];
