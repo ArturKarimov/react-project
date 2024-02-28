@@ -1,7 +1,7 @@
 let CACHE_NAME = "react-burger-pwa";
 const urlsToCache = [
-"/",
-"/index.html",
+"%PUBLIC_URL%/",
+"%PUBLIC_URL%/index.html",
 ];
 // self.addEventListener("install", function(event) {
 // // Perform install steps
