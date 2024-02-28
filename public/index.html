@@ -13,9 +13,7 @@
     <script type="text/javascript">
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
-          navigator.serviceWorker.register("serviceWorker.js", {
-            scope: "/react-project/"
-          }).then(function(registration) {
+          navigator.serviceWorker.register("serviceWorker.js").then(function(registration) {
             console.log("ServiceWorker registration successful", registration.scope);
           }, function(err) {
             console.log("ServiceWorker registration failed:", err);
