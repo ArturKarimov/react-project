@@ -1,7 +1,7 @@
 {
   "name": "PWA React Burger",
   "short_name": "Demo",
-  "start_url": "index.html",
+  "start_url": "/",
   "icons": [
     {
       "src": "assets/images/android-chrome-192x192.png",
