@@ -8,7 +8,7 @@ interface UserState {
     user?: IUserInfo;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
     isAuth: false,
     user: undefined,
     prevPath: undefined,
